@@ -1,0 +1,23 @@
+.main-nav {
+  width: 50px;
+  height: 100vh;
+  display: inline-block;
+  background-color: #252526;
+  transition: width 1s;
+  border-radius: 0 10px 10px 0; }
+  .main-nav.opened {
+    width: 200px;
+    transition: all 1s; }
+  .main-nav ul {
+    list-style-type: none;
+    overflow: hidden; }
+    .main-nav ul li a {
+      text-decoration: none;
+      width: 100%;
+      display: inline-block;
+      position: relative;
+      color: white;
+      border-radius: 5px; }
+      .main-nav ul li a:hover {
+        background: #49494b;
+        transition: background 0.3s; }

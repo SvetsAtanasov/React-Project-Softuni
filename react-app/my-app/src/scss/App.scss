@@ -1,0 +1,15 @@
+@import "./components/nav.scss";
+@import "./components/icon.scss";
+
+#root {
+  display: flex;
+}
+
+a {
+  font-size: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
