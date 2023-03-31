@@ -1,13 +1,18 @@
+.pad {
+  padding: 0 62px; }
+
 .main-nav {
   width: 50px;
   height: 100vh;
   display: inline-block;
   background-color: #252526;
-  transition: width 1s;
-  border-radius: 0 10px 10px 0; }
+  transition: width .5s;
+  border-radius: 0 10px 10px 0;
+  position: absolute;
+  left: 0; }
   .main-nav.opened {
     width: 200px;
-    transition: all 1s; }
+    transition: all .5s; }
   .main-nav ul {
     list-style-type: none;
     overflow: hidden; }
@@ -25,8 +30,18 @@
 .icon {
   color: white; }
 
-#root {
-  display: flex; }
+.form {
+  width: 500px;
+  height: 500px;
+  transform: translateY(50%);
+  background: white;
+  border-radius: 2px;
+  box-shadow: 3px 3px rgba(226, 226, 226, 0.5); }
+  .form div input {
+    border-radius: 3px; }
+
+body {
+  background-color: #3e3e42; }
 
 a {
   font-size: 20px; }

@@ -3,12 +3,14 @@
   height: 100vh;
   display: inline-block;
   background-color: #252526;
-  transition: width 1s;
+  transition: width .5s;
   border-radius: 0 10px 10px 0;
+  position: absolute;
+  left: 0;
 
   &.opened {
     width: 200px;
-    transition: all 1s;
+    transition: all .5s;
   }
 
   ul {

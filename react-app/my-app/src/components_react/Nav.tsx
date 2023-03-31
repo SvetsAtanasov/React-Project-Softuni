@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container } from "react-bootstrap";
@@ -9,6 +9,7 @@ import {
   faSignOut,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { AuthStore } from "../context/AuthStore";
 
 const navLinks = [
   {
@@ -39,6 +40,7 @@ const navLinks = [
 ];
 
 const Navigation = () => {
+  const { user, error, token } = useContext(AuthStore);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {

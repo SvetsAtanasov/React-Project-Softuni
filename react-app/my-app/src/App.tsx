@@ -9,19 +9,24 @@ import { Container } from "react-bootstrap";
 import ThemeButton from "./components_react/ThemeButton";
 import { StoreProvider } from "./context/Store";
 import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import { AuthProvider } from "./context/AuthStore";
 
 function App() {
   return (
-    <Container className="p-relative m-0 p-0 d-flex">
+    <Container className="mw-100 p-relative m-0 d-flex pad">
       <StoreProvider>
-        <ThemeButton />
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<CatalogPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        <AuthProvider>
+          <ThemeButton />
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<CatalogPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </AuthProvider>
       </StoreProvider>
     </Container>
   );

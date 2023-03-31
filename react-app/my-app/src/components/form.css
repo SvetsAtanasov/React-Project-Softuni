@@ -1,0 +1,8 @@
+.form {
+  width: 500px;
+  height: 500px;
+  transform: translateY(50%);
+  background: white;
+  border-radius: 2px; }
+  .form div input {
+    border-radius: 3px; }

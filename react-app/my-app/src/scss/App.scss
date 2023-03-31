@@ -1,8 +1,16 @@
+//vars
+@import './vars/vars.scss';
+
+//helpers
+@import './helpers/helpers.scss';
+
+//components
 @import "./components/nav.scss";
 @import "./components/icon.scss";
+@import './components//form.scss';
 
-#root {
-  display: flex;
+body {
+  background-color: #3e3e42;
 }
 
 a {

@@ -1,0 +1,14 @@
+.form {
+    width: 500px;
+    height: 500px;
+    transform: translateY(50%);
+    background: white;
+    border-radius: 2px;
+    box-shadow: 3px 3px $grey-tint;
+
+    div {
+        input {
+            border-radius: 3px;
+        }
+    }
+}
