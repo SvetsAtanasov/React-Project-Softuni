@@ -11,8 +11,6 @@ const Form = ({ title }: CustomFormProps) => {
   const { user, login, error, token } = useContext(AuthStore);
   const navigate = useNavigate();
 
-  console.log(error);
-
   const [formData, setFormData] = useState<{
     username: string;
     password: string;
@@ -21,6 +19,7 @@ const Form = ({ title }: CustomFormProps) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     login(formData.username, formData.password);
+    console.log(error);
   };
 
   const handleChange = (e: any) => {
