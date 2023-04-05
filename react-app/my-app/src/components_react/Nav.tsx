@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container } from "react-bootstrap";
 import {
@@ -40,12 +40,28 @@ const navLinks = [
 ];
 
 const Navigation = () => {
-  const { user, error, token } = useContext(AuthStore);
+  const { user, error } = useContext(AuthStore);
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
 
   const handleOpen = () => {
     setIsOpen(true);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch(`http://localhost:7777${pathname}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: token || "",
+      },
+    })
+      .then((data: any) => data.json())
+      .then((value: any) => console.log(value))
+      .catch((err: any) => console.log(err));
+  }, [pathname]);
 
   return (
     <nav
