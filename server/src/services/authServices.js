@@ -9,7 +9,7 @@ const jwt = {
   verify: util.promisify(jsonWebToken.verify),
 };
 
-async function registerUser(username, email, password) {
+async function registerUser(username, email, password, repeatPassword) {
   const user = { username, email, password };
 
   const userExists = await User.findOne({
@@ -18,6 +18,10 @@ async function registerUser(username, email, password) {
 
   if (userExists) {
     throw new Error("User already exists");
+  }
+
+  if (password !== repeatPassword) {
+    throw new Error("Passwords do not match");
   }
 
   return User.create(user);

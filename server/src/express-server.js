@@ -48,7 +48,7 @@ server.use(authMiddleware);
 server.use("/", homeRouter);
 server.use("/create", isGuest);
 server.use("/", createRouter);
-server.use("/register", isAuth);
+// server.use("/register", isAuth);
 server.use("/", registerRouter);
 server.use("/login", isAuth);
 server.use("/", loginRouter);

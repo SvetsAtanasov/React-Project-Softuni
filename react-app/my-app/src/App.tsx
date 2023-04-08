@@ -14,7 +14,7 @@ import { AuthProvider } from "./context/AuthStore";
 
 function App() {
   return (
-    <Container className="mw-100 p-relative m-0 d-flex pad">
+    <Container className="mw-100 p-relative m-0 pad">
       <StoreProvider>
         <AuthProvider>
           <ThemeButton />

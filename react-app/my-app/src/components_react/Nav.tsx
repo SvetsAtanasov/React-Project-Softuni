@@ -40,7 +40,7 @@ const navLinks = [
 ];
 
 const Navigation = () => {
-  const { user, error } = useContext(AuthStore);
+  const { user, payload } = useContext(AuthStore);
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
 
@@ -48,20 +48,20 @@ const Navigation = () => {
     setIsOpen(true);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
 
-    fetch(`http://localhost:7777${pathname}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: token || "",
-      },
-    })
-      .then((data: any) => data.json())
-      .then((value: any) => console.log(value))
-      .catch((err: any) => console.log(err));
-  }, [pathname]);
+  //   fetch(`http://localhost:7777${pathname}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: token || "",
+  //     },
+  //   })
+  //     .then((data: any) => data.json())
+  //     .then((value: any) => console.log(value))
+  //     .catch((err: any) => console.log(err));
+  // }, [pathname]);
 
   return (
     <nav

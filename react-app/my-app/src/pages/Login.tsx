@@ -3,9 +3,9 @@ import { AuthStore } from "../context/AuthStore";
 import { useContext } from "react";
 
 const LoginPage = () => {
-  const { error, login } = useContext(AuthStore);
+  const { login, payload } = useContext(AuthStore);
 
-  return <Form login={login} error={error} title={"Login"} />;
+  return <Form login={login} title={"Login"} payload={payload} />;
 };
 
 export default LoginPage;

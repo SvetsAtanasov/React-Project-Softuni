@@ -1,20 +1,30 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 import { reducer } from "../utils/utils";
 
 export type Auth = {
   user: { username: string };
-  error: any;
+  payload: { error: any; success: any };
   login: (username: string, password: string) => any;
-  checkTokenValidity: (token: string) => any;
+  register: (
+    username: string,
+    email: string,
+    password: string,
+    repeatPassword: string
+  ) => void;
   //   register: (username: string, password: string) => void;
   //   logout: () => void;
 };
 
 export const AuthStore = createContext<Auth>({
   user: { username: "" },
-  error: "",
+  payload: { error: "", success: "" },
   login: (username: string, password: string) => {},
-  checkTokenValidity: (token: string) => {},
+  register: (
+    username: string,
+    email: string,
+    password: string,
+    repeatPassword: string
+  ) => {},
   //   register: (username: string, password: string) => {},
   //   logout: () => {},
 });
@@ -22,10 +32,14 @@ export const AuthStore = createContext<Auth>({
 const { Provider } = AuthStore;
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState({ username: "" });
-  // const [error, setError] = useState(undefined);
+  const [user, dispatchUser] = useReducer(reducer, {
+    user: { username: "" },
+  });
 
-  const [error, dispatch] = useReducer(reducer, { error: undefined });
+  const [payload, dispatchPayload] = useReducer(reducer, {
+    error: undefined,
+    success: undefined,
+  });
 
   const login = async (username: string, password: string) => {
     try {
@@ -40,32 +54,69 @@ export const AuthProvider = ({ children }: any) => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message);
+        throw new Error(data);
       }
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data);
     } catch (err: any) {
-      dispatch({ type: "set_error", nextError: err.message });
+      dispatchPayload({
+        type: "set_error",
+
+        nextError: err.message,
+      });
+
+      setTimeout(() => {
+        dispatchPayload({
+          type: "set_error",
+
+          nextError: undefined,
+        });
+      }, 0.1);
     }
   };
 
-  const checkTokenValidity = async (token: string) => {
+  const register = async (
+    username: string,
+    email: string,
+    password: string,
+    repeatPassword: string
+  ) => {
     try {
-      const res = await fetch("http://localhost:7777/checkValidity", {
+      const res = await fetch("http://localhost:7777/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(token),
+        body: JSON.stringify({ username, email, password, repeatPassword }),
       });
 
-      if (res.status === 401) localStorage.clear();
-    } catch (err: any) {}
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data);
+      }
+
+      localStorage.setItem("token", data);
+    } catch (err: any) {
+      dispatchPayload({
+        type: "set_error",
+        payload: {
+          error: err.message,
+        },
+      });
+
+      setTimeout(() => {
+        dispatchPayload({
+          type: "set_error",
+          payload: {
+            error: undefined,
+          },
+        });
+      }, 0.1);
+    }
   };
 
   return (
-    <Provider value={{ user, login, error, checkTokenValidity }}>
-      {children}
-    </Provider>
+    <Provider value={{ user, login, payload, register }}>{children}</Provider>
   );
 };
