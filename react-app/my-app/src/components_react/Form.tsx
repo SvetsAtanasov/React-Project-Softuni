@@ -14,7 +14,6 @@ export type CustomFormProps = React.PropsWithChildren<{
   ) => void;
   title?: string;
   variant?: FormVariant;
-  payload: any;
 }>;
 
 const Form = ({
@@ -22,7 +21,6 @@ const Form = ({
   register,
   title,
   variant = "login",
-  payload,
 }: CustomFormProps) => {
   const [formData, setFormData] = useState<{
     username: string;
@@ -147,26 +145,16 @@ const Form = ({
     </>
   );
 
-  console.log(payload);
-
-  useEffect(() => {
-    toast.error(payload.error);
-  }, [payload.error]);
-
   return (
-    <>
-      <Toast />
-
-      <Container className="mw-100 d-flex flex-column ">
-        <form
-          className="ms-auto me-auto p-3 form d-flex flex-column"
-          onSubmit={handleSubmit}
-        >
-          <h1 className="px-2 text-center">{title}</h1>
-          {variant === "login" ? loginFormBody : registerBody}
-        </form>
-      </Container>
-    </>
+    <Container className="mw-100 d-flex flex-column ">
+      <form
+        className="ms-auto me-auto p-3 form d-flex flex-column"
+        onSubmit={handleSubmit}
+      >
+        <h1 className="px-2 text-center">{title}</h1>
+        {variant === "login" ? loginFormBody : registerBody}
+      </form>
+    </Container>
   );
 };
 

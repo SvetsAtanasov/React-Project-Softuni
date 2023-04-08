@@ -5,5 +5,11 @@ export const reducer = (state: any, action: any) => {
         ...state,
         error: action.nextError,
       };
+
+    case "set_success":
+      return {
+        ...state,
+        success: action.nextSuccess,
+      };
   }
 };

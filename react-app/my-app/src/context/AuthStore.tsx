@@ -57,21 +57,17 @@ export const AuthProvider = ({ children }: any) => {
         throw new Error(data);
       }
 
+      dispatchPayload({
+        type: "set_success",
+        nextSuccess: "Successfully logged in!",
+      });
+
       localStorage.setItem("token", data);
     } catch (err: any) {
       dispatchPayload({
         type: "set_error",
-
         nextError: err.message,
       });
-
-      setTimeout(() => {
-        dispatchPayload({
-          type: "set_error",
-
-          nextError: undefined,
-        });
-      }, 0.1);
     }
   };
 
@@ -100,19 +96,8 @@ export const AuthProvider = ({ children }: any) => {
     } catch (err: any) {
       dispatchPayload({
         type: "set_error",
-        payload: {
-          error: err.message,
-        },
+        nextError: err.message,
       });
-
-      setTimeout(() => {
-        dispatchPayload({
-          type: "set_error",
-          payload: {
-            error: undefined,
-          },
-        });
-      }, 0.1);
     }
   };
 

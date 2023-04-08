@@ -3,16 +3,9 @@ import { AuthStore } from "../context/AuthStore";
 import { useContext } from "react";
 
 const RegisterPage = () => {
-  const { register, payload } = useContext(AuthStore);
+  const { register } = useContext(AuthStore);
 
-  return (
-    <Form
-      register={register}
-      variant={"register"}
-      title="Register"
-      payload={payload}
-    />
-  );
+  return <Form register={register} variant={"register"} title="Register" />;
 };
 
 export default RegisterPage;

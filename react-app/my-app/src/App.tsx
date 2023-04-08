@@ -11,13 +11,14 @@ import { StoreProvider } from "./context/Store";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { AuthProvider } from "./context/AuthStore";
+import Toast from "./components_react/Toast";
 
 function App() {
   return (
     <Container className="mw-100 p-relative m-0 pad">
       <StoreProvider>
         <AuthProvider>
-          <ThemeButton />
+          <Toast />
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
