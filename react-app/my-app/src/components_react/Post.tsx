@@ -3,7 +3,7 @@ export type CustomPostProps = React.PropsWithChildren<{
 }>;
 
 const Post = ({ photo }: CustomPostProps) => {
-  return <span>{photo._id}</span>;
+  return <span className="m-0">{photo._id}</span>;
 };
 
 export default Post;
