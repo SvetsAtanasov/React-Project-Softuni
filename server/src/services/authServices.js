@@ -52,20 +52,15 @@ async function login(username, password) {
 }
 
 async function authMiddleware(req, res, next) {
-  const token = req.cookies["auth"];
+  const token = req.headers.authorization;
 
   if (token) {
     try {
-      const decodedToken = await jwt.verify(token, SECRET);
-
-      req.user = decodedToken;
-      res.locals.user = decodedToken;
-      res.locals.isAuthenticated = true;
+      await jwt.verify(token, SECRET);
 
       next();
     } catch (err) {
-      res.clearCookie("auth");
-      res.redirect("/login");
+      res.status(401).send();
     }
   } else {
     next();

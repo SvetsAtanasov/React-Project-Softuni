@@ -1,9 +1,11 @@
-import { createContext, useReducer } from "react";
-import { reducer } from "../utils/utils";
+import { createContext, useCallback, useReducer } from "react";
+import { reducer } from "../actions/authActions";
+import { useNavigate } from "react-router-dom";
 
 export type Auth = {
   user: { username: string };
   payload: { error: any; success: any };
+  token: any;
   login: (username: string, password: string) => any;
   register: (
     username: string,
@@ -11,13 +13,13 @@ export type Auth = {
     password: string,
     repeatPassword: string
   ) => void;
-  //   register: (username: string, password: string) => void;
-  //   logout: () => void;
+  dispatchToken: (obj: any) => void;
 };
 
 export const AuthStore = createContext<Auth>({
   user: { username: "" },
   payload: { error: "", success: "" },
+  token: "",
   login: (username: string, password: string) => {},
   register: (
     username: string,
@@ -25,6 +27,7 @@ export const AuthStore = createContext<Auth>({
     password: string,
     repeatPassword: string
   ) => {},
+  dispatchToken: (obj: any) => {},
   //   register: (username: string, password: string) => {},
   //   logout: () => {},
 });
@@ -32,76 +35,106 @@ export const AuthStore = createContext<Auth>({
 const { Provider } = AuthStore;
 
 export const AuthProvider = ({ children }: any) => {
+  const navigate = useNavigate();
+
   const [user, dispatchUser] = useReducer(reducer, {
     user: { username: "" },
   });
-
   const [payload, dispatchPayload] = useReducer(reducer, {
     error: undefined,
     success: undefined,
   });
+  const [token, dispatchToken] = useReducer(reducer, {
+    token: undefined,
+  });
 
-  const login = async (username: string, password: string) => {
-    try {
-      const res = await fetch("http://localhost:7777/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+  const login = useCallback(
+    async (username: string, password: string) => {
+      try {
+        const res = await fetch("http://localhost:7777/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data);
+        if (!res.ok) {
+          throw new Error(data);
+        }
+
+        dispatchToken({
+          type: "set_token",
+          nextToken: data,
+        });
+        navigate("/");
+      } catch (err: any) {
+        dispatchPayload({
+          type: "set_error",
+          nextError: err.message,
+        });
+
+        setTimeout(() => {
+          dispatchPayload({
+            type: "set_error",
+            nextError: undefined,
+          });
+        }, 0.1);
       }
+    },
+    [navigate]
+  );
 
-      dispatchPayload({
-        type: "set_success",
-        nextSuccess: "Successfully logged in!",
-      });
+  const register = useCallback(
+    async (
+      username: string,
+      email: string,
+      password: string,
+      repeatPassword: string
+    ) => {
+      try {
+        const res = await fetch("http://localhost:7777/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, email, password, repeatPassword }),
+        });
 
-      localStorage.setItem("token", data);
-    } catch (err: any) {
-      dispatchPayload({
-        type: "set_error",
-        nextError: err.message,
-      });
-    }
-  };
+        const data = await res.json();
 
-  const register = async (
-    username: string,
-    email: string,
-    password: string,
-    repeatPassword: string
-  ) => {
-    try {
-      const res = await fetch("http://localhost:7777/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password, repeatPassword }),
-      });
+        if (!res.ok) {
+          throw new Error(data);
+        }
 
-      const data = await res.json();
+        localStorage.setItem("token", data);
+        dispatchToken({
+          type: "set_token",
+          nextToken: data,
+        });
+        navigate("/");
+      } catch (err: any) {
+        dispatchPayload({
+          type: "set_error",
+          nextError: err.message,
+        });
 
-      if (!res.ok) {
-        throw new Error(data);
+        setTimeout(() => {
+          dispatchPayload({
+            type: "set_error",
+            nextError: undefined,
+          });
+        }, 0.1);
       }
-
-      localStorage.setItem("token", data);
-    } catch (err: any) {
-      dispatchPayload({
-        type: "set_error",
-        nextError: err.message,
-      });
-    }
-  };
+    },
+    [navigate]
+  );
 
   return (
-    <Provider value={{ user, login, payload, register }}>{children}</Provider>
+    <Provider value={{ user, login, payload, register, token, dispatchToken }}>
+      {children}
+    </Provider>
   );
 };

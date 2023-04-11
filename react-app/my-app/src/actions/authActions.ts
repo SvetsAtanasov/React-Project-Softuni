@@ -11,5 +11,11 @@ export const reducer = (state: any, action: any) => {
         ...state,
         success: action.nextSuccess,
       };
+
+    case "set_token":
+      return {
+        ...state,
+        token: action.nextToken,
+      };
   }
 };

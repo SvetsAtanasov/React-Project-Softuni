@@ -12,10 +12,9 @@ const {
 } = require("../services/photoService");
 
 catalogRouter.get("/catalog", async (req, res) => {
-  console.log(req.headers.authorization);
   const photos = await getAllPhotos().lean();
-  res.json(photos);
-  // res.render("catalog", { photos: photos });
+  console.log(photos);
+  res.status(200).json(photos);
 });
 
 detailsPhotoRouter.get("/catalog/:photoId", async (req, res) => {

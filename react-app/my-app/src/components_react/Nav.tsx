@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container } from "react-bootstrap";
@@ -11,16 +11,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 
-const navLinks = [
+const navNotLogged = [
   {
     title: "Home",
     icon: faBook,
     to: "/",
+    show: true,
   },
   {
     title: "Catalog",
     icon: faHouse,
     to: "/about",
+    show: true,
   },
   {
     title: "Login",
@@ -32,6 +34,21 @@ const navLinks = [
     icon: faUserPlus,
     to: "/register",
   },
+];
+
+const navLogged = [
+  {
+    title: "Home",
+    icon: faBook,
+    to: "/",
+    show: true,
+  },
+  {
+    title: "Catalog",
+    icon: faHouse,
+    to: "/about",
+    show: true,
+  },
   {
     title: "Logout",
     icon: faSignOut,
@@ -40,28 +57,29 @@ const navLinks = [
 ];
 
 const Navigation = () => {
-  const { user, payload } = useContext(AuthStore);
+  const { dispatchToken, token } = useContext(AuthStore);
   const [isOpen, setIsOpen] = useState(false);
-  const { pathname } = useLocation();
+  const [navLinks, setNavLinks] = useState(navNotLogged);
+  const location = useLocation();
 
   const handleOpen = () => {
     setIsOpen(true);
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token.token) {
+      localStorage.setItem("token", token.token);
+      setNavLinks(navLogged);
+    } else {
+      setNavLinks(navNotLogged);
+    }
+  }, [token]);
 
-  //   fetch(`http://localhost:7777${pathname}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       authorization: token || "",
-  //     },
-  //   })
-  //     .then((data: any) => data.json())
-  //     .then((value: any) => console.log(value))
-  //     .catch((err: any) => console.log(err));
-  // }, [pathname]);
+  useEffect(() => {
+    const tempToken = localStorage.getItem("token");
+
+    dispatchToken({ type: "set_token", nextToken: tempToken });
+  }, [location, dispatchToken]);
 
   return (
     <nav

@@ -3,7 +3,7 @@ import { Button, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Toast from "./Toast";
 
-export type FormVariant = "login" | "register";
+export type FormVariant = "login" | "register" | "create";
 export type CustomFormProps = React.PropsWithChildren<{
   login?: (username: string, password: string) => void;
   register?: (
@@ -14,6 +14,7 @@ export type CustomFormProps = React.PropsWithChildren<{
   ) => void;
   title?: string;
   variant?: FormVariant;
+  payload: { error: any; success: any };
 }>;
 
 const Form = ({
@@ -21,6 +22,7 @@ const Form = ({
   register,
   title,
   variant = "login",
+  payload,
 }: CustomFormProps) => {
   const [formData, setFormData] = useState<{
     username: string;
@@ -39,17 +41,27 @@ const Form = ({
     repeatPassword: "",
   });
 
+  const [createFormData, setCreateFormData] = useState<{
+    name: string;
+    age: number;
+    description: string;
+    location: string;
+    image: string;
+  }>({ name: "", age: 0, description: "", location: "", image: "" });
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    variant === "login"
-      ? login!(formData.username, formData.password)
-      : register!(
-          registerFormData.username,
-          registerFormData.email,
-          registerFormData.password,
-          registerFormData.repeatPassword
-        );
+    if (variant === "login") {
+      login!(formData.username, formData.password);
+    } else if (variant === "register") {
+      register!(
+        registerFormData.username,
+        registerFormData.email,
+        registerFormData.password,
+        registerFormData.repeatPassword
+      );
+    }
   };
 
   const handleChange = (e: any) => {
@@ -58,8 +70,10 @@ const Form = ({
 
     if (variant === "login") {
       setFormData((values) => ({ ...values, [name]: value }));
-    } else {
+    } else if (variant === "register") {
       setRegisterFormData((values) => ({ ...values, [name]: value }));
+    } else {
+      setCreateFormData((values) => ({ ...values, [name]: value }));
     }
   };
 
@@ -145,16 +159,86 @@ const Form = ({
     </>
   );
 
+  const createPhotoFormBody = (
+    <>
+      <Container className="py-3 d-flex flex-column">
+        <label>Name</label>
+        <input
+          className="px-2"
+          name="name"
+          value={createFormData.name}
+          onChange={handleChange}
+          type="text"
+        />
+      </Container>
+
+      <Container className="py-3 d-flex flex-column">
+        <label>Age</label>
+        <input
+          className="px-2"
+          name="age"
+          value={createFormData.age}
+          onChange={handleChange}
+          type="text"
+        />
+      </Container>
+
+      <Container className="d-flex py-3 flex-column">
+        <label>Description</label>
+        <input
+          className="px-2"
+          name="description"
+          value={createFormData.description}
+          onChange={handleChange}
+          type="text"
+        />
+      </Container>
+
+      <Container className="d-flex py-3 flex-column">
+        <label>Location</label>
+        <input
+          className="px-2"
+          name="location"
+          value={createFormData.location}
+          onChange={handleChange}
+          type="text"
+        />
+      </Container>
+
+      <Container className="d-flex py-3 flex-column">
+        <label>Image</label>
+        <input
+          className="px-2"
+          name="image"
+          value={createFormData.image}
+          onChange={handleChange}
+          type="text"
+        />
+      </Container>
+
+      <Button className="mt-auto mb-0" type="submit">
+        Submit
+      </Button>
+    </>
+  );
+
+  useEffect(() => {
+    toast.error(payload.error);
+  }, [payload.error]);
+
   return (
-    <Container className="mw-100 d-flex flex-column ">
-      <form
-        className="ms-auto me-auto p-3 form d-flex flex-column"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="px-2 text-center">{title}</h1>
-        {variant === "login" ? loginFormBody : registerBody}
-      </form>
-    </Container>
+    <>
+      <Toast />
+      <Container className="mw-100 d-flex flex-column ">
+        <form
+          className="ms-auto me-auto p-3 form d-flex flex-column"
+          onSubmit={handleSubmit}
+        >
+          <h1 className="px-2 text-center">{title}</h1>
+          {variant === "login" ? loginFormBody : registerBody}
+        </form>
+      </Container>
+    </>
   );
 };
 

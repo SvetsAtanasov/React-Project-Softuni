@@ -6,19 +6,16 @@ import HomePage from "./pages/Home";
 import CatalogPage from "./pages/Catalog";
 import ErrorPage from "./pages/404";
 import { Container } from "react-bootstrap";
-import ThemeButton from "./components_react/ThemeButton";
-import { StoreProvider } from "./context/Store";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { AuthProvider } from "./context/AuthStore";
-import Toast from "./components_react/Toast";
+import PhotoProvider from "./context/PhotoStore";
 
 function App() {
   return (
     <Container className="mw-100 p-relative m-0 pad">
-      <StoreProvider>
-        <AuthProvider>
-          <Toast />
+      <AuthProvider>
+        <PhotoProvider>
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -27,8 +24,8 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
-        </AuthProvider>
-      </StoreProvider>
+        </PhotoProvider>
+      </AuthProvider>
     </Container>
   );
 }
