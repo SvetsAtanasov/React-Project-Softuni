@@ -40,8 +40,7 @@ loginRouter.post("/login", async (req, res) => {
 });
 
 logoutRouter.get("/logout", (req, res) => {
-  res.clearCookie("auth");
-  res.redirect("/");
+  res.status(200).json({ token: undefined });
 });
 
 module.exports = { registerRouter, loginRouter, logoutRouter };

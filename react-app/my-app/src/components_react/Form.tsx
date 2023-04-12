@@ -61,6 +61,7 @@ const Form = ({
         registerFormData.password,
         registerFormData.repeatPassword
       );
+    } else {
     }
   };
 

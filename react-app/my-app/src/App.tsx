@@ -10,16 +10,18 @@ import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { AuthProvider } from "./context/AuthStore";
 import PhotoProvider from "./context/PhotoStore";
+import Create from "./pages/Create";
 
 function App() {
   return (
     <Container className="mw-100 p-relative m-0 pad">
       <AuthProvider>
+        <Navigation />
         <PhotoProvider>
-          <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<CatalogPage />} />
+            <Route path="/create" element={<Create />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="*" element={<ErrorPage />} />

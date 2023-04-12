@@ -48,44 +48,41 @@ export const AuthProvider = ({ children }: any) => {
     token: undefined,
   });
 
-  const login = useCallback(
-    async (username: string, password: string) => {
-      try {
-        const res = await fetch("http://localhost:7777/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        });
+  const login = useCallback(async (username: string, password: string) => {
+    try {
+      const res = await fetch("http://localhost:7777/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data);
-        }
+      if (!res.ok) {
+        throw new Error(data);
+      }
 
-        dispatchToken({
-          type: "set_token",
-          nextToken: data,
-        });
-        navigate("/");
-      } catch (err: any) {
+      dispatchToken({
+        type: "set_token",
+        nextToken: data,
+      });
+      navigate("/");
+    } catch (err: any) {
+      dispatchPayload({
+        type: "set_error",
+        nextError: err.message,
+      });
+
+      setTimeout(() => {
         dispatchPayload({
           type: "set_error",
-          nextError: err.message,
+          nextError: undefined,
         });
-
-        setTimeout(() => {
-          dispatchPayload({
-            type: "set_error",
-            nextError: undefined,
-          });
-        }, 0.1);
-      }
-    },
-    [navigate]
-  );
+      }, 0.1);
+    }
+  }, []);
 
   const register = useCallback(
     async (

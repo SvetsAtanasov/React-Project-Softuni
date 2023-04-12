@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import {
   faBook,
   faHouse,
+  faPhotoVideo,
   faSignIn,
   faSignOut,
   faUserPlus,
@@ -16,13 +17,11 @@ const navNotLogged = [
     title: "Home",
     icon: faBook,
     to: "/",
-    show: true,
   },
   {
     title: "Catalog",
     icon: faHouse,
     to: "/about",
-    show: true,
   },
   {
     title: "Login",
@@ -41,13 +40,16 @@ const navLogged = [
     title: "Home",
     icon: faBook,
     to: "/",
-    show: true,
   },
   {
     title: "Catalog",
     icon: faHouse,
-    to: "/about",
-    show: true,
+    to: "/catalog",
+  },
+  {
+    title: "Create",
+    icon: faPhotoVideo,
+    to: "/create",
   },
   {
     title: "Logout",
