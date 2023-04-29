@@ -8,14 +8,24 @@ function getAllUserCreatedPhotos(id) {
   return Photo.find({ owner: id });
 }
 
-function createPhoto(name, age, description, location, image, _id) {
+function createPhoto(
+  name,
+  age,
+  description,
+  location,
+  image,
+  userId,
+  username,
+  timestamp
+) {
   return Photo.create({
     name,
     image,
     age,
     description,
     location,
-    owner: _id,
+    owner: { userId, username },
+    timestamp,
   });
 }
 
@@ -35,6 +45,10 @@ function updatePhoto(id, photo) {
   return Photo.findByIdAndUpdate(id, { ...photo });
 }
 
+function likePhoto(id) {
+  return Photo.findById(id).populate("likes");
+}
+
 module.exports = {
   getAllPhotos,
   createPhoto,
@@ -43,4 +57,5 @@ module.exports = {
   commentPhoto,
   updatePhoto,
   getAllUserCreatedPhotos,
+  likePhoto,
 };

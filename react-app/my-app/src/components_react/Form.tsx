@@ -12,6 +12,13 @@ export type CustomFormProps = React.PropsWithChildren<{
     password: string,
     repeatPassword: string
   ) => void;
+  create?: (photo: {
+    name: string;
+    age: number;
+    description: string;
+    location: string;
+    image: string;
+  }) => void;
   title?: string;
   variant?: FormVariant;
   payload: { error: any; success: any };
@@ -20,6 +27,7 @@ export type CustomFormProps = React.PropsWithChildren<{
 const Form = ({
   login,
   register,
+  create,
   title,
   variant = "login",
   payload,
@@ -53,8 +61,12 @@ const Form = ({
     e.preventDefault();
 
     if (variant === "login") {
+      console.log("login");
+
       login!(formData.username, formData.password);
     } else if (variant === "register") {
+      console.log("reg");
+
       register!(
         registerFormData.username,
         registerFormData.email,
@@ -62,6 +74,9 @@ const Form = ({
         registerFormData.repeatPassword
       );
     } else {
+      console.log("create");
+
+      create!(createFormData);
     }
   };
 
@@ -70,10 +85,13 @@ const Form = ({
     const value = e.target.value;
 
     if (variant === "login") {
+      console.log("login");
       setFormData((values) => ({ ...values, [name]: value }));
     } else if (variant === "register") {
+      console.log("reg");
       setRegisterFormData((values) => ({ ...values, [name]: value }));
     } else {
+      console.log("create");
       setCreateFormData((values) => ({ ...values, [name]: value }));
     }
   };
@@ -108,7 +126,7 @@ const Form = ({
     </>
   );
 
-  const registerBody = (
+  const registerFormBody = (
     <>
       <Container className="py-3 d-flex flex-column">
         <label>Username</label>
@@ -223,6 +241,16 @@ const Form = ({
     </>
   );
 
+  const getBody = () => {
+    if (variant === "login") {
+      return loginFormBody;
+    } else if (variant === "register") {
+      return registerFormBody;
+    }
+
+    return createPhotoFormBody;
+  };
+
   useEffect(() => {
     toast.error(payload.error);
   }, [payload.error]);
@@ -232,11 +260,12 @@ const Form = ({
       <Toast />
       <Container className="mw-100 d-flex flex-column ">
         <form
+          method="POST"
           className="ms-auto me-auto p-3 form d-flex flex-column"
           onSubmit={handleSubmit}
         >
           <h1 className="px-2 text-center">{title}</h1>
-          {variant === "login" ? loginFormBody : registerBody}
+          {getBody()}
         </form>
       </Container>
     </>

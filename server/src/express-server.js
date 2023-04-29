@@ -41,12 +41,13 @@ const {
   deletePhotoRouter,
   buyPhotoRouter,
   editPhotoRouter,
+  likePhotoRouter,
 } = require("./controllers/catalogController");
 const { profileController } = require("./controllers/profileController");
 const { authMiddleware, isGuest, isAuth } = require("./services/authServices");
 server.use(authMiddleware);
 server.use("/", homeRouter);
-server.use("/create", isGuest);
+// server.use("/create", isGuest);
 server.use("/", createRouter);
 // server.use("/register", isAuth);
 server.use("/", registerRouter);
@@ -61,6 +62,7 @@ server.use("/", buyPhotoRouter);
 server.use("/", editPhotoRouter);
 server.use("/profile", isGuest);
 server.use("/", profileController);
+server.use("/", likePhotoRouter);
 server.get("/*", (req, res) => {
   res.render("404");
 });

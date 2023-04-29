@@ -1,22 +1,30 @@
 const createRouter = require("express").Router();
 const { createPhoto } = require("../services/photoService");
 
-createRouter
-  .get("/create", (req, res) => {
-    res.status(200).send();
-  })
-  .post("/create", async (req, res) => {
-    const { name, age, description, location, image } = req.body;
+createRouter.post("/create", async (req, res) => {
+  const { name, age, description, location, image } = req.body;
 
-    try {
-      await createPhoto(name, age, description, location, image, req.user._id);
+  const date = new Date();
+  const timestamp = (date.getTime() / 1000).toFixed(0);
 
-      res.status(200).json({});
-    } catch (err) {
-      const errorFormat = err.message.split(": ");
+  try {
+    await createPhoto(
+      name,
+      age,
+      description,
+      location,
+      image,
+      req.user._id,
+      req.user.username,
+      timestamp
+    );
 
-      res.status(400).json({ error: errorFormat[errorFormat.length - 1] });
-    }
-  });
+    res.status(200).send("Creation successfull");
+  } catch (err) {
+    const errorFormat = err.message.split(": ");
+    console.log(err.message);
+    res.status(400).json({ error: errorFormat[errorFormat.length - 1] });
+  }
+});
 
 module.exports = { createRouter };

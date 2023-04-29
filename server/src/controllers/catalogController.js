@@ -3,12 +3,14 @@ const detailsPhotoRouter = require("express").Router();
 const deletePhotoRouter = require("express").Router();
 const buyPhotoRouter = require("express").Router();
 const editPhotoRouter = require("express").Router();
+const likePhotoRouter = require("express").Router();
 const {
   getAllPhotos,
   findOne,
   deletePhoto,
   commentPhoto,
   updatePhoto,
+  likePhoto,
 } = require("../services/photoService");
 
 catalogRouter.get("/catalog", async (req, res) => {
@@ -85,10 +87,32 @@ editPhotoRouter
     res.redirect("/catalog");
   });
 
+likePhotoRouter.use((req, res, next) => {
+  req.method = "PUT";
+
+  next();
+});
+
+likePhotoRouter.put("/catalog/:photoId/like", async (req, res) => {
+  const { id, likeObj } = req.body;
+  const photo = await likePhoto(id);
+  console.log(photo + " test");
+
+  if (photo.likes.some((x) => x.username === likeObj.username)) {
+    const idx = photo.likes.findIndex((x) => x.username === likeObj.username);
+    photo.likes.splice(idx, 1);
+  } else {
+    photo.likes.push({ ...likeObj });
+  }
+
+  await photo.save();
+});
+
 module.exports = {
   catalogRouter,
   detailsPhotoRouter,
   deletePhotoRouter,
   buyPhotoRouter,
   editPhotoRouter,
+  likePhotoRouter,
 };

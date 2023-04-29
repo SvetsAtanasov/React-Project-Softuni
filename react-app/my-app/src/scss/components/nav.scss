@@ -3,22 +3,49 @@
   height: 100vh;
   display: inline-block;
   background-color: #252526;
-  transition: width .5s;
+  transition: width 0.5s;
   border-radius: 0 10px 10px 0;
   position: absolute;
   left: 0;
 
   &.opened {
     width: 200px;
-    transition: all .5s;
+    transition: all 0.5s;
+
+    .username {
+      display: block;
+      text-align: center;
+      color: white;
+    }
   }
 
   ul {
     list-style-type: none;
     overflow: hidden;
 
+    .toggle {
+      svg {
+        cursor: pointer;
+
+        &:hover {
+          background: #49494b;
+          transition: background0.3s;
+        }
+      }
+    }
+
     li {
-      a {
+      .logout {
+        cursor: pointer;
+
+        svg {
+          width: 25px;
+          height: 20px;
+        }
+      }
+
+      a,
+      .logout {
         text-decoration: none;
         width: 100%;
         display: inline-block;

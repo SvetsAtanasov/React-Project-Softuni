@@ -32,13 +32,22 @@ let photoSchema = new mongoose.Schema({
   commentList: [
     {
       userId: { type: mongoose.Types.ObjectId, ref: "user" },
+      username: { type: String, ref: "user" },
       comment: String,
     },
   ],
+  likes: [
+    {
+      userId: { type: mongoose.Types.ObjectId, ref: "user" },
+      username: { type: String, ref: "user" },
+      like: { type: Boolean },
+    },
+  ],
   owner: {
-    type: mongoose.Types.ObjectId,
-    ref: "user",
+    userId: { type: mongoose.Types.ObjectId, ref: "user" },
+    username: { type: String, ref: "user" },
   },
+  timestamp: { type: String },
 });
 
 const Photo = mongoose.model("photo", photoSchema);

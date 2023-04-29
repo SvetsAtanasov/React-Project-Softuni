@@ -1,0 +1,17 @@
+.post {
+  width: 100%;
+  max-width: 614px; }
+  .post .photo-information-container {
+    padding-left: 20px;
+    background-color: white; }
+    .post .photo-information-container .username,
+    .post .photo-information-container .location {
+      font: normal 600 14px/18px; }
+  .post .image-container img {
+    width: 614px;
+    height: auto; }
+  .post .footer-container .buttons-container .like-button {
+    cursor: pointer; }
+  .post .footer-container .comments-container .collapse,
+  .post .footer-container .comments-container .expand {
+    font: normal 400 10px/18px "Open sans"; }

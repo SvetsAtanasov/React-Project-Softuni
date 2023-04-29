@@ -1,7 +1,7 @@
-import { useContext, useEffect, useMemo, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useContext, useEffect, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import {
   faBook,
   faHouse,
@@ -9,96 +9,98 @@ import {
   faSignIn,
   faSignOut,
   faUserPlus,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 
-const navNotLogged = [
-  {
-    title: "Home",
-    icon: faBook,
-    to: "/",
-  },
-  {
-    title: "Catalog",
-    icon: faHouse,
-    to: "/about",
-  },
-  {
-    title: "Login",
-    icon: faSignIn,
-    to: "/login",
-  },
-  {
-    title: "Register",
-    icon: faUserPlus,
-    to: "/register",
-  },
-];
-
-const navLogged = [
-  {
-    title: "Home",
-    icon: faBook,
-    to: "/",
-  },
-  {
-    title: "Catalog",
-    icon: faHouse,
-    to: "/catalog",
-  },
-  {
-    title: "Create",
-    icon: faPhotoVideo,
-    to: "/create",
-  },
-  {
-    title: "Logout",
-    icon: faSignOut,
-    to: "/logout",
-  },
-];
-
 const Navigation = () => {
-  const { dispatchToken, token } = useContext(AuthStore);
-  const [isOpen, setIsOpen] = useState(false);
-  const [navLinks, setNavLinks] = useState(navNotLogged);
-  const location = useLocation();
+  const { isAuth, logout, username } = useContext(AuthStore);
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const navNotLogged = [
+    {
+      title: "Home",
+      icon: faBook,
+      to: "/",
+    },
+    {
+      title: "Catalog",
+      icon: faHouse,
+      to: "/catalog",
+    },
+    {
+      title: "Login",
+      icon: faSignIn,
+      to: "/login",
+    },
+    {
+      title: "Register",
+      icon: faUserPlus,
+      to: "/register",
+    },
+  ];
+
+  const navLogged = [
+    {
+      title: "Home",
+      icon: faBook,
+      to: "/",
+    },
+    {
+      title: "Catalog",
+      icon: faHouse,
+      to: "/catalog",
+    },
+    {
+      title: "Create",
+      icon: faPhotoVideo,
+      to: "/create",
+    },
+  ];
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState<any>([]);
+  const navRef = useRef<any>(null);
+
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   useEffect(() => {
-    if (token.token) {
-      localStorage.setItem("token", token.token);
-      setNavLinks(navLogged);
-    } else {
-      setNavLinks(navNotLogged);
-    }
-  }, [token]);
+    isAuth ? setNavLinks(navLogged) : setNavLinks(navNotLogged);
+  }, [isAuth]);
 
   useEffect(() => {
-    const tempToken = localStorage.getItem("token");
+    const handleOutsideClick = (e: any) => {
+      if (!navRef.current.contains(e.target)) {
+        handleClose();
+      }
+    };
 
-    dispatchToken({ type: "set_token", nextToken: tempToken });
-  }, [location, dispatchToken]);
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   return (
-    <nav
-      onMouseDown={handleOpen}
-      className={`main-nav ${isOpen ? "opened" : ""} `}
-    >
+    <nav ref={navRef} className={`main-nav ${isOpen ? "opened" : ""} `}>
+      {username !== undefined && <span className="username">{username}</span>}
+
       <ul className="m-0 px-0 py-3 d-flex flex-column">
-        {navLinks.map((navLink, idx) => (
-          <li
-            key={idx}
-            className={`${idx !== navLinks.length - 1 ? "pb-3" : ""}`}
-          >
+        <li className="pb-3 toggle">
+          <FontAwesomeIcon
+            onClick={toggleOpen}
+            className="py-3 icon w-100"
+            icon={faBars}
+          />
+        </li>
+        {navLinks.map((navLink: any, idx: number) => (
+          <li key={idx} className={`pb-3  ${isOpen ? "px-2" : "px-1"}`}>
             <NavLink
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen((prev) => (prev = false));
-              }}
+              onClick={handleClose}
               style={({ isActive }) => {
                 return isActive ? { background: "#49494b" } : {};
               }}
@@ -106,11 +108,16 @@ const Navigation = () => {
             >
               {isOpen ? (
                 <Container className="px-4 m-0 d-flex align-items-center">
-                  <FontAwesomeIcon className="me-3 icon" icon={navLink.icon} />
+                  <FontAwesomeIcon
+                    onClick={navLink.onClick}
+                    className="me-3 icon"
+                    icon={navLink.icon}
+                  />
                   <span>{navLink.title}</span>
                 </Container>
               ) : (
                 <FontAwesomeIcon
+                  onClick={navLink.onClick}
                   className="py-3 icon w-100"
                   icon={navLink.icon}
                 />
@@ -118,6 +125,21 @@ const Navigation = () => {
             </NavLink>
           </li>
         ))}
+
+        {isAuth && (
+          <li className={`${isOpen ? "px-2" : "px-1"}`}>
+            <Container className="logout">
+              <FontAwesomeIcon
+                onClick={() => {
+                  logout();
+                  handleClose();
+                }}
+                className="py-3 icon w-100"
+                icon={faSignOut}
+              />
+            </Container>
+          </li>
+        )}
       </ul>
     </nav>
   );

@@ -3,6 +3,7 @@ const { SECRET } = require("../config/config");
 const bcrypt = require("bcrypt");
 const jsonWebToken = require("jsonwebtoken");
 const util = require("util");
+const { decode } = require("punycode");
 
 const jwt = {
   sign: util.promisify(jsonWebToken.sign),
@@ -46,21 +47,30 @@ async function login(username, password) {
     username: user.username,
   };
 
-  const token = await jwt.sign(payload, SECRET, { expiresIn: "2h" });
+  const token = await jwt.sign(payload, SECRET, { expiresIn: "1h" });
+  const buffer = Buffer.from(token, "base64").toString("binary");
+  const regexBuffer = new RegExp(/\"[exp]+\"\:[0-9]*/, "g");
+  const exp = buffer.match(regexBuffer)[0].split(":")[1];
+  const returnToken = {
+    token: token,
+    username: user.username,
+    exp: exp,
+  };
 
-  return token;
+  return returnToken;
 }
 
 async function authMiddleware(req, res, next) {
-  const token = req.headers.authorization;
+  if (req.headers.authorization) {
+    const token = JSON.parse(req.headers.authorization).token;
 
-  if (token) {
     try {
-      await jwt.verify(token, SECRET);
+      const decodedToken = await jwt.verify(token, SECRET);
+      req.user = decodedToken;
 
       next();
     } catch (err) {
-      res.status(401).send();
+      res.status(401).json(err.message);
     }
   } else {
     next();
@@ -69,17 +79,13 @@ async function authMiddleware(req, res, next) {
 
 function isGuest(req, res, next) {
   if (!req.user) {
-    return res.redirect("/login");
+    res.status(401).send("Unauthorized");
   }
 
   next();
 }
 
 function isAuth(req, res, next) {
-  if (req.user) {
-    return res.redirect("/");
-  }
-
   next();
 }
 

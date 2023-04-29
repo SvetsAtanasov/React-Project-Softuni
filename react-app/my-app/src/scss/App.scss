@@ -1,13 +1,15 @@
 //vars
-@import './vars/vars.scss';
+@import "./vars/vars.scss";
 
 //helpers
-@import './helpers/helpers.scss';
+@import "./helpers/helpers.scss";
 
 //components
 @import "./components/nav.scss";
 @import "./components/icon.scss";
-@import './components//form.scss';
+@import "./components//form.scss";
+@import "./components/spinner.scss";
+@import "./components/post.scss";
 
 body {
   background-color: #3e3e42;

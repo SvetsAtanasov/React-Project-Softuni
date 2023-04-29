@@ -39,8 +39,8 @@ loginRouter.post("/login", async (req, res) => {
   }
 });
 
-logoutRouter.get("/logout", (req, res) => {
-  res.status(200).json({ token: undefined });
+logoutRouter.post("/logout", (req, res) => {
+  res.status(200).send("Logging out");
 });
 
 module.exports = { registerRouter, loginRouter, logoutRouter };

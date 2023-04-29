@@ -7,9 +7,9 @@ export type CustomCatalogProps = React.PropsWithChildren<{
 
 const Catalog = ({ photos }: CustomCatalogProps) => {
   return (
-    <Container>
+    <Container className="pt-3">
       {photos.map((photo: any, idx: number) => (
-        <Post photo={photo} />
+        <Post key={idx} photo={photo} />
       ))}
     </Container>
   );

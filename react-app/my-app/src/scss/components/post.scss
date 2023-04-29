@@ -1,0 +1,36 @@
+.post {
+  width: 100%;
+  max-width: 614px;
+
+  .photo-information-container {
+    padding-left: 20px;
+    background-color: white;
+
+    .username,
+    .location {
+      font: normal 600 14px/18px;
+    }
+  }
+
+  .image-container {
+    img {
+      width: 614px;
+      height: auto;
+    }
+  }
+
+  .footer-container {
+    .buttons-container {
+      .like-button {
+        cursor: pointer;
+      }
+    }
+
+    .comments-container {
+      .collapse,
+      .expand {
+        font: normal 400 10px/18px "Open sans";
+      }
+    }
+  }
+}

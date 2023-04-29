@@ -20,7 +20,7 @@ function App() {
         <PhotoProvider>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<CatalogPage />} />
+            <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/create" element={<Create />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
