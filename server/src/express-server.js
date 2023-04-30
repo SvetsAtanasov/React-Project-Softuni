@@ -38,6 +38,7 @@ const {
 const { profileController } = require("./controllers/profileController");
 const { authMiddleware, isGuest, isAuth } = require("./services/authServices");
 const { getAllPhotos } = require("./services/photoService");
+const { parse } = require("path");
 app.use(authMiddleware);
 app.use("/", homeRouter);
 app.use("/", createRouter);
@@ -68,14 +69,20 @@ wss.on("connection", (ws) => {
   connectedClients.push(ws);
   console.log("WebSocket connection established");
 
-  ws.on("message", async () => {
-    try {
-      const posts = await getAllPhotos();
+  ws.on("message", async (message) => {
+    const parsedMessage = JSON.parse(message);
 
-      connectedClients.forEach((client) =>
-        client.send(`${JSON.stringify(posts)}\n`)
-      );
-    } catch (err) {}
+    if (parsedMessage.type === "Like_Post") {
+      try {
+        const posts = await getAllPhotos();
+
+        connectedClients.forEach((client) =>
+          client.send(`${JSON.stringify(posts)}\n`)
+        );
+      } catch (err) {}
+    } else if (parsedMessage.type === "Connection_Established") {
+      ws.send("Handshake");
+    }
   });
 
   ws.on("close", () => {

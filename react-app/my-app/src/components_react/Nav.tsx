@@ -13,49 +13,49 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 
+const navNotLogged = [
+  {
+    title: "Home",
+    icon: faBook,
+    to: "/",
+  },
+  {
+    title: "Catalog",
+    icon: faHouse,
+    to: "/catalog",
+  },
+  {
+    title: "Login",
+    icon: faSignIn,
+    to: "/login",
+  },
+  {
+    title: "Register",
+    icon: faUserPlus,
+    to: "/register",
+  },
+];
+
+const navLogged = [
+  {
+    title: "Home",
+    icon: faBook,
+    to: "/",
+  },
+  {
+    title: "Catalog",
+    icon: faHouse,
+    to: "/catalog",
+  },
+  {
+    title: "Create",
+    icon: faPhotoVideo,
+    to: "/create",
+  },
+];
+
 const Navigation = () => {
   const { isAuth, logout, username } = useContext(AuthStore);
-
-  const navNotLogged = [
-    {
-      title: "Home",
-      icon: faBook,
-      to: "/",
-    },
-    {
-      title: "Catalog",
-      icon: faHouse,
-      to: "/catalog",
-    },
-    {
-      title: "Login",
-      icon: faSignIn,
-      to: "/login",
-    },
-    {
-      title: "Register",
-      icon: faUserPlus,
-      to: "/register",
-    },
-  ];
-
-  const navLogged = [
-    {
-      title: "Home",
-      icon: faBook,
-      to: "/",
-    },
-    {
-      title: "Catalog",
-      icon: faHouse,
-      to: "/catalog",
-    },
-    {
-      title: "Create",
-      icon: faPhotoVideo,
-      to: "/create",
-    },
-  ];
 
   const [isOpen, setIsOpen] = useState(false);
   const [navLinks, setNavLinks] = useState<any>([]);

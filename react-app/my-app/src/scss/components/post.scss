@@ -20,6 +20,8 @@
   }
 
   .footer-container {
+    background-color: white;
+    padding: 10px;
     .buttons-container {
       .like-button {
         cursor: pointer;
@@ -30,6 +32,25 @@
       .collapse,
       .expand {
         font: normal 400 10px/18px "Open sans";
+      }
+    }
+
+    .comment-form {
+      form {
+        input {
+          background-color: #212529;
+          color: white;
+          width: 50%;
+          border-radius: 5px;
+          border: none;
+          padding: 5px;
+          transition: width 0.4s;
+
+          &:focus {
+            width: 75%;
+            transition: all 0.4s;
+          }
+        }
       }
     }
   }

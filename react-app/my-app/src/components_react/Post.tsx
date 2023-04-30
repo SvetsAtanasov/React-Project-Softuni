@@ -100,7 +100,13 @@ const Post = ({ photo, ws }: CustomPostProps) => {
           <span className="likes">{`${photo.likes.length} likes`}</span>
         </div>
 
-        <div className="comments-container d-flex">
+        <div className="timestamp-post-container">
+          <span className="timestamp">
+            {photoTimestampHandler(diffTimestamp)}
+          </span>
+        </div>
+
+        <div className="py-2 comments-container d-flex">
           {commentsExpanded ? (
             <>
               <div className="comment-username"></div>
@@ -115,10 +121,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
           {commentsExpanded ? (
             <Button
-              onClick={(e: any) => {
-                e.stopPropagation();
-                handleExpandComments();
-              }}
+              onClick={() => handleExpandComments()}
               className="collapse d-inline-block"
               variant={"light"}
             >
@@ -135,10 +138,22 @@ const Post = ({ photo, ws }: CustomPostProps) => {
           )}
         </div>
 
-        <div className="timestamp-post-container">
-          <span className="timestamp">
-            {photoTimestampHandler(diffTimestamp)}
-          </span>
+        <div className="comment-form">
+          <form
+            className="d-flex"
+            onSubmit={(e: any) => {
+              e.preventDefault();
+            }}
+          >
+            <input
+              onChange={() => {}}
+              name="comment"
+              placeholder="Write your comment..."
+            />
+            <Button className="ms-auto" variant={"dark"} type="submit">
+              Comment
+            </Button>
+          </form>
         </div>
       </div>
     </div>

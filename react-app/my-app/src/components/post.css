@@ -10,8 +10,22 @@
   .post .image-container img {
     width: 614px;
     height: auto; }
-  .post .footer-container .buttons-container .like-button {
-    cursor: pointer; }
-  .post .footer-container .comments-container .collapse,
-  .post .footer-container .comments-container .expand {
-    font: normal 400 10px/18px "Open sans"; }
+  .post .footer-container {
+    background-color: white;
+    padding: 10px; }
+    .post .footer-container .buttons-container .like-button {
+      cursor: pointer; }
+    .post .footer-container .comments-container .collapse,
+    .post .footer-container .comments-container .expand {
+      font: normal 400 10px/18px "Open sans"; }
+    .post .footer-container .comment-form form input {
+      background-color: #212529;
+      color: white;
+      width: 50%;
+      border-radius: 5px;
+      border: none;
+      padding: 5px;
+      transition: width 0.4s; }
+      .post .footer-container .comment-form form input:focus {
+        width: 75%;
+        transition: all 0.4s; }

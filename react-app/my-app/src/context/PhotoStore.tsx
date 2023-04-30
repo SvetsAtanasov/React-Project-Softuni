@@ -28,13 +28,12 @@ export const PhotoProvider = ({ children }: any) => {
   const [allPhotos, setPhotos] = useState([]);
 
   const handleSendMessageToServer = () => {
-    client.send("");
+    client.send(JSON.stringify({ type: "Like_Post" }));
   };
 
   useEffect(() => {
     client.onopen = () => {
-      console.log("connection to ws");
-      client.send("Connected");
+      client.send(JSON.stringify({ type: "Connection_Established" }));
     };
 
     client.onmessage = (message: any) => {

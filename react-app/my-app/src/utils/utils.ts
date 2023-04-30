@@ -26,8 +26,11 @@ export const requestHandler = async (
 };
 
 export const photoTimestampHandler = (timestamp: number): string => {
-  if (timestamp / 60 >= 60) {
+  if (timestamp / 60 / 60 >= 24) {
+    return `${(timestamp / 60 / 60 / 24).toFixed(0)} days ago`;
+  } else if (timestamp / 60 >= 60) {
     return `${(timestamp / 60 / 60).toFixed(0)} hours ago`;
   }
+
   return `${new Date(timestamp * 1000).getMinutes()} minutes ago`;
 };
