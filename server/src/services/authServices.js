@@ -64,13 +64,15 @@ async function authMiddleware(req, res, next) {
   if (req.headers.authorization) {
     const token = JSON.parse(req.headers.authorization).token;
 
+    console.log(token);
+
     try {
       const decodedToken = await jwt.verify(token, SECRET);
       req.user = decodedToken;
 
       next();
     } catch (err) {
-      res.status(401).json(err.message);
+      res.status(401).send("Invalid Token!");
     }
   } else {
     next();

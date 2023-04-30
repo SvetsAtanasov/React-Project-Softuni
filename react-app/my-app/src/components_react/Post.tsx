@@ -67,7 +67,7 @@ const Post = ({ photo }: CustomPostProps) => {
     } else {
       navigate("/login");
     }
-  }, [postRef, navigate]);
+  }, [postRef, navigate, isLiked, username]);
 
   return (
     <div

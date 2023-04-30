@@ -1,13 +1,5 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useReducer,
-  useState,
-} from "react";
-import { PHOTO_ACTIONS, photoReducer } from "../actions/photoActions";
+import { createContext, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthStore } from "./AuthStore";
 import { requestHandler } from "../utils/utils";
 
 export type Photo = {
@@ -29,7 +21,6 @@ const { Provider } = PhotoStore;
 export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
-  const { isAuth } = useContext(AuthStore);
 
   const handleGetAllPhotos = useCallback(async () => {
     try {
@@ -53,11 +44,15 @@ export const PhotoProvider = ({ children }: any) => {
         photo
       );
 
-      if (res.ok) {
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        window.dispatchEvent(new Event("storage"));
+        navigate("/login");
+      } else if (res.ok) {
         navigate("/catalog");
       }
     },
-    [isAuth]
+    [navigate]
   );
 
   const handleGetCreatePhotoRoute = async (dispatchToken: any, token: any) => {

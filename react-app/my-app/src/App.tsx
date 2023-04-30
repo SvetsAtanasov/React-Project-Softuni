@@ -14,7 +14,10 @@ import Create from "./pages/Create";
 
 function App() {
   return (
-    <Container className="mw-100 position-relative m-0 pad">
+    <Container
+      className="mw-100 position-relative m-0 pad"
+      style={{ minHeight: "100vh" }}
+    >
       <AuthProvider>
         <Navigation />
         <PhotoProvider>

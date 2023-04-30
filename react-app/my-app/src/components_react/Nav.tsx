@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {
   faBook,
   faHouse,
@@ -87,9 +87,12 @@ const Navigation = () => {
 
   return (
     <nav ref={navRef} className={`main-nav ${isOpen ? "opened" : ""} `}>
-      {username !== undefined && <span className="username">{username}</span>}
-
       <ul className="m-0 px-0 py-3 d-flex flex-column">
+        <li>
+          {username !== undefined && (
+            <span className="username">{username}</span>
+          )}
+        </li>
         <li className="pb-3 toggle">
           <FontAwesomeIcon
             onClick={toggleOpen}
