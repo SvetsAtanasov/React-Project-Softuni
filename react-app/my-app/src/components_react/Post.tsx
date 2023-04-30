@@ -20,9 +20,10 @@ export type CustomPostProps = React.PropsWithChildren<{
     owner: { userId: string; username: string };
     timestamp: string;
   };
+  ws: () => void;
 }>;
 
-const Post = ({ photo }: CustomPostProps) => {
+const Post = ({ photo, ws }: CustomPostProps) => {
   const [commentsExpanded, setCommentsExpanded] = useState<boolean>();
   const { username } = useContext(AuthStore);
   const [isLiked, setIsLiked] = useState(
@@ -64,10 +65,12 @@ const Post = ({ photo }: CustomPostProps) => {
         window.dispatchEvent(new Event("storage"));
         navigate("/login");
       }
+
+      ws();
     } else {
       navigate("/login");
     }
-  }, [postRef, navigate, isLiked, username]);
+  }, [postRef, navigate, isLiked, username, ws]);
 
   return (
     <div
@@ -84,7 +87,7 @@ const Post = ({ photo }: CustomPostProps) => {
       </div>
       <div className="footer-container">
         <div className="buttons-container">
-          <div onClick={handleLikeDislikePost}>
+          <div className="d-inline-block" onClick={handleLikeDislikePost}>
             <FontAwesomeIcon
               className="like-button"
               icon={isLiked ? faHeart : faHeartOutlined}

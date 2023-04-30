@@ -51,11 +51,11 @@ export const AuthProvider = ({ children }: any) => {
 
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
-  const checkIsAuth = () => {
+  const checkIsAuth = useCallback(() => {
     const token = JSON.parse(localStorage.getItem("token")!);
 
     if (!token) setIsAuth(false);
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("storage", checkIsAuth);

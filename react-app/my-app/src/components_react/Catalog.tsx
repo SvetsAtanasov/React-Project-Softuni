@@ -3,13 +3,14 @@ import Post from "./Post";
 
 export type CustomCatalogProps = React.PropsWithChildren<{
   photos: any;
+  ws: () => void;
 }>;
 
-const Catalog = ({ photos }: CustomCatalogProps) => {
+const Catalog = ({ photos, ws }: CustomCatalogProps) => {
   return (
     <Container className="pt-3">
       {photos.map((photo: any, idx: number) => (
-        <Post key={idx} photo={photo} />
+        <Post ws={ws} key={idx} photo={photo} />
       ))}
     </Container>
   );

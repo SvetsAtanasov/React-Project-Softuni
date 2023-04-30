@@ -1,12 +1,16 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+
+const client = new W3CWebSocket("ws://localhost:7777/catalog");
 
 export type Photo = {
   handleGetAllPhotos: () => any;
   handleGetCreatePhotoRoute: (dispatchToken: any, token: any) => any;
   handleCreatePhoto: (photo: any) => any;
   allPhotos: any;
+  handleSendMessageToServer: () => void;
 };
 
 export const PhotoStore = createContext<Photo>({
@@ -14,6 +18,7 @@ export const PhotoStore = createContext<Photo>({
   handleGetCreatePhotoRoute: (dispatchToken: any) => {},
   handleCreatePhoto: () => {},
   allPhotos: [],
+  handleSendMessageToServer: () => {},
 });
 
 const { Provider } = PhotoStore;
@@ -21,6 +26,26 @@ const { Provider } = PhotoStore;
 export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
+
+  const handleSendMessageToServer = () => {
+    client.send("");
+  };
+
+  useEffect(() => {
+    client.onopen = () => {
+      console.log("connection to ws");
+      client.send("Connected");
+    };
+
+    client.onmessage = (message: any) => {
+      const photos = JSON.parse(message.data);
+      setPhotos(photos);
+    };
+
+    return () => {
+      client.close();
+    };
+  }, []);
 
   const handleGetAllPhotos = useCallback(async () => {
     try {
@@ -72,6 +97,7 @@ export const PhotoProvider = ({ children }: any) => {
   return (
     <Provider
       value={{
+        handleSendMessageToServer,
         handleGetAllPhotos,
         handleGetCreatePhotoRoute,
         handleCreatePhoto,

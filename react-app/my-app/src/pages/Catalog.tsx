@@ -7,7 +7,8 @@ import { Container } from "react-bootstrap";
 const Catalog = lazy(() => import("../components_react/Catalog"));
 
 const CatalogPage = () => {
-  const { allPhotos, handleGetAllPhotos } = useContext(PhotoStore);
+  const { allPhotos, handleGetAllPhotos, handleSendMessageToServer } =
+    useContext(PhotoStore);
 
   useEffect(() => {
     handleGetAllPhotos();
@@ -16,7 +17,7 @@ const CatalogPage = () => {
   return (
     <Suspense fallback={<Spinner className={"spinner"} />}>
       <Container className={"mw-100"}>
-        <Catalog photos={allPhotos} />
+        <Catalog ws={handleSendMessageToServer} photos={allPhotos} />
       </Container>
     </Suspense>
   );
