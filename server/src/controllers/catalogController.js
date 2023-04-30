@@ -15,14 +15,11 @@ const {
 
 catalogRouter.get("/catalog", async (req, res) => {
   const photos = await getAllPhotos().lean();
-  console.log(photos);
   res.status(200).json(photos);
 });
 
 detailsPhotoRouter.get("/catalog/:photoId", async (req, res) => {
   const photo = await findOne(req.params.photoId).lean();
-
-  console.log(photo.image);
 
   let isOwner = undefined;
 
@@ -53,9 +50,6 @@ buyPhotoRouter.use((req, res, next) => {
 buyPhotoRouter.post("/catalog/:photoId", async (req, res) => {
   const photo = await commentPhoto(req.params.photoId);
   const { comment } = req.body;
-
-  console.log(photo);
-  console.log(req.user._id);
 
   photo.commentList.push({ userId: req.user._id, comment: comment });
 
@@ -96,7 +90,6 @@ likePhotoRouter.use((req, res, next) => {
 likePhotoRouter.put("/catalog/:photoId/like", async (req, res) => {
   const { id, likeObj } = req.body;
   const photo = await likePhoto(id);
-  console.log(photo + " test");
 
   if (photo.likes.some((x) => x.username === likeObj.username)) {
     const idx = photo.likes.findIndex((x) => x.username === likeObj.username);

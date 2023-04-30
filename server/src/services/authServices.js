@@ -64,8 +64,6 @@ async function authMiddleware(req, res, next) {
   if (req.headers.authorization) {
     const token = JSON.parse(req.headers.authorization).token;
 
-    console.log(token);
-
     try {
       const decodedToken = await jwt.verify(token, SECRET);
       req.user = decodedToken;

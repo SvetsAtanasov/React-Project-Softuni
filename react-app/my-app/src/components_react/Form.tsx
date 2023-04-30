@@ -61,12 +61,8 @@ const Form = ({
     e.preventDefault();
 
     if (variant === "login") {
-      console.log("login");
-
       login!(formData.username, formData.password);
     } else if (variant === "register") {
-      console.log("reg");
-
       register!(
         registerFormData.username,
         registerFormData.email,
@@ -74,8 +70,6 @@ const Form = ({
         registerFormData.repeatPassword
       );
     } else {
-      console.log("create");
-
       create!(createFormData);
     }
   };
@@ -85,13 +79,10 @@ const Form = ({
     const value = e.target.value;
 
     if (variant === "login") {
-      console.log("login");
       setFormData((values) => ({ ...values, [name]: value }));
     } else if (variant === "register") {
-      console.log("reg");
       setRegisterFormData((values) => ({ ...values, [name]: value }));
     } else {
-      console.log("create");
       setCreateFormData((values) => ({ ...values, [name]: value }));
     }
   };

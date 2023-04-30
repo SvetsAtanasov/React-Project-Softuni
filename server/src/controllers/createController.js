@@ -22,7 +22,6 @@ createRouter.post("/create", async (req, res) => {
     res.status(200).send("Creation successfull");
   } catch (err) {
     const errorFormat = err.message.split(": ");
-    console.log(err.message);
     res.status(400).json({ error: errorFormat[errorFormat.length - 1] });
   }
 });

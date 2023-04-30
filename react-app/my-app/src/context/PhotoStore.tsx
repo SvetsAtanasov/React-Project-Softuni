@@ -28,9 +28,7 @@ export const PhotoProvider = ({ children }: any) => {
       const photos = await res.json();
 
       setPhotos((arr: any) => (arr = photos));
-    } catch (err: any) {
-      console.log(err);
-    }
+    } catch (err: any) {}
   }, []);
 
   const handleCreatePhoto = useCallback(
