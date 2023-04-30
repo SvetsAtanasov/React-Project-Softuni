@@ -106,6 +106,8 @@ likePhotoRouter.put("/catalog/:photoId/like", async (req, res) => {
   }
 
   await photo.save();
+
+  res.status(200).send(likeObj.like);
 });
 
 module.exports = {

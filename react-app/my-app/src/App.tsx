@@ -14,7 +14,7 @@ import Create from "./pages/Create";
 
 function App() {
   return (
-    <Container className="mw-100 p-relative m-0 pad">
+    <Container className="mw-100 position-relative m-0 pad">
       <AuthProvider>
         <Navigation />
         <PhotoProvider>

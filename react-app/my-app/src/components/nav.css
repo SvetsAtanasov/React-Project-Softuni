@@ -1,6 +1,6 @@
 .main-nav {
   width: 50px;
-  height: 100vh;
+  height: 100%;
   display: inline-block;
   background-color: #252526;
   transition: width 0.5s;
@@ -16,7 +16,9 @@
       color: white; }
   .main-nav ul {
     list-style-type: none;
-    overflow: hidden; }
+    overflow: hidden;
+    position: sticky;
+    top: 0; }
     .main-nav ul .toggle svg {
       cursor: pointer; }
       .main-nav ul .toggle svg:hover {

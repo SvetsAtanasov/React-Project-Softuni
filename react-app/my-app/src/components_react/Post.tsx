@@ -5,6 +5,7 @@ import { useCallback, useContext, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { AuthStore } from "../context/AuthStore";
 import { requestHandler, photoTimestampHandler } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 export type CustomPostProps = React.PropsWithChildren<{
   photo: {
@@ -25,12 +26,16 @@ const Post = ({ photo }: CustomPostProps) => {
   const [commentsExpanded, setCommentsExpanded] = useState<boolean>();
   const { username } = useContext(AuthStore);
   const [isLiked, setIsLiked] = useState(
-    photo.likes.find((x: any) => x.username === username)?.like
+    photo.likes.find(
+      (x: { userId: string; username: string; like: boolean }) =>
+        x.username === username
+    )?.like
   );
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
 
   const postRef = useRef<any>(null);
+  const navigate = useNavigate();
 
   const handleExpandComments = () => {
     setCommentsExpanded(!commentsExpanded);
@@ -41,16 +46,28 @@ const Post = ({ photo }: CustomPostProps) => {
   };
 
   const handleLikeDislikePost = useCallback(async () => {
-    const res = await requestHandler(
-      "PUT",
-      `http://localhost:7777/catalog/${postRef.current.dataset.id}/like`,
-      null,
-      {
-        id: postRef.current.dataset.id,
-        likeObj: { userId: null, username: username, like: !isLiked },
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const res = await requestHandler(
+        "PUT",
+        `http://localhost:7777/catalog/${postRef.current.dataset.id}/like`,
+        JSON.parse(token),
+        {
+          id: postRef.current.dataset.id,
+          likeObj: { userId: null, username: username, like: !isLiked },
+        }
+      );
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        window.dispatchEvent(new Event("storage"));
+        navigate("/login");
       }
-    );
-  }, [postRef]);
+    } else {
+      navigate("/login");
+    }
+  }, [postRef, navigate]);
 
   return (
     <div
