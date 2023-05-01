@@ -41,6 +41,8 @@ export const AuthStore = createContext<Auth>({
 const { Provider } = AuthStore;
 
 export const AuthProvider = ({ children }: any) => {
+  const dateToday: number = +(new Date().getTime() / 1000).toFixed();
+
   const navigate = useNavigate();
 
   const [username, setUsername] = useState<string | undefined>(undefined);
@@ -64,6 +66,14 @@ export const AuthProvider = ({ children }: any) => {
       window.removeEventListener("storage", checkIsAuth);
     };
   }, [checkIsAuth]);
+
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token")!);
+    console.log("test");
+    if (token && dateToday >= token.exp) {
+      setIsAuth(false);
+    }
+  }, [dateToday]);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token")!);

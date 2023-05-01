@@ -78,14 +78,16 @@ const Post = ({ photo, ws }: CustomPostProps) => {
       data-id={photo._id}
       className="post ms-auto me-auto pb-3"
     >
-      <div className="photo-information-container d-flex flex-column">
+      <div className="p-2 photo-information-container d-flex flex-row">
         <span className="username">{photo.owner.username}</span>
-        <span className="location">{photo.location}</span>
+        <span className="location ms-auto">{photo.location}</span>
       </div>
+
       <div className="image-container">
         <img src={photo.image} alt={photo.image} />
       </div>
-      <div className="footer-container">
+
+      <div className="p-2 footer-container">
         <div className="buttons-container">
           <div className="d-inline-block" onClick={handleLikeDislikePost}>
             <FontAwesomeIcon
@@ -98,12 +100,6 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
         <div className="likes-container">
           <span className="likes">{`${photo.likes.length} likes`}</span>
-        </div>
-
-        <div className="timestamp-post-container">
-          <span className="timestamp">
-            {photoTimestampHandler(diffTimestamp)}
-          </span>
         </div>
 
         <div className="py-2 comments-container d-flex">
@@ -120,21 +116,19 @@ const Post = ({ photo, ws }: CustomPostProps) => {
           )}
 
           {commentsExpanded ? (
-            <Button
+            <span
+              className="d-block collapse"
               onClick={() => handleExpandComments()}
-              className="collapse d-inline-block"
-              variant={"light"}
             >
               Collapse Comments
-            </Button>
+            </span>
           ) : (
-            <Button
-              onClick={handleExpandComments}
-              className="expand d-inline-block"
-              variant={"light"}
+            <span
+              className="d-block expand"
+              onClick={() => handleExpandComments()}
             >
               Expand Comments
-            </Button>
+            </span>
           )}
         </div>
 
@@ -154,6 +148,12 @@ const Post = ({ photo, ws }: CustomPostProps) => {
               Comment
             </Button>
           </form>
+        </div>
+
+        <div className="pt-1 timestamp-post-container">
+          <span className="timestamp">
+            {photoTimestampHandler(diffTimestamp)}
+          </span>
         </div>
       </div>
     </div>

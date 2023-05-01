@@ -67,7 +67,6 @@
   width: 100%;
   max-width: 614px; }
   .post .photo-information-container {
-    padding-left: 20px;
     background-color: white; }
     .post .photo-information-container .username,
     .post .photo-information-container .location {
@@ -76,13 +75,13 @@
     width: 614px;
     height: auto; }
   .post .footer-container {
-    background-color: white;
-    padding: 10px; }
+    background-color: white; }
     .post .footer-container .buttons-container .like-button {
       cursor: pointer; }
     .post .footer-container .comments-container .collapse,
     .post .footer-container .comments-container .expand {
-      font: normal 400 10px/18px "Open sans"; }
+      cursor: pointer;
+      font: normal 400 12px/18px "Open sans"; }
     .post .footer-container .comment-form form input {
       background-color: #212529;
       color: white;
