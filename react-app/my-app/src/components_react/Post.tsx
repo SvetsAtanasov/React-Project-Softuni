@@ -75,6 +75,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
         }
 
         ws("Comment_Post");
+        setFormData("");
       }
     },
     [formData, username, ws, navigate]
@@ -173,15 +174,14 @@ const Post = ({ photo, ws }: CustomPostProps) => {
                 )
               )
             ) : (
-              <></>
-              // <div className="comment-wrapper d-flex">
-              //   <div className="comment-username">
-              //     {photo.commentList[photo.commentList.length].username}
-              //   </div>
-              //   <div className="comment">
-              //     {photo.commentList[photo.commentList.length].comment}
-              //   </div>
-              // </div>
+              <div className="comment-wrapper d-flex">
+                <div className="me-3 comment-username">
+                  {photo.commentList[photo.commentList.length - 1].username}
+                </div>
+                <div className="comment">
+                  {photo.commentList[photo.commentList.length - 1].comment}
+                </div>
+              </div>
             )}
           </div>
         )}
@@ -194,7 +194,12 @@ const Post = ({ photo, ws }: CustomPostProps) => {
               name="comment"
               placeholder="Write your comment..."
             />
-            <Button className="ms-auto" variant={"dark"} type="submit">
+            <Button
+              disabled={!formData}
+              className="ms-auto"
+              variant={"dark"}
+              type="submit"
+            >
               Comment
             </Button>
           </form>
