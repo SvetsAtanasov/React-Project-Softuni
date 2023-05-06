@@ -41,13 +41,13 @@ deletePhotoRouter.get("/catalog/:photoId/delete", async (req, res) => {
 
 buyPhotoRouter.use((req, res, next) => {
   if (req.query.method == "POST") {
-    req.method = "POST";
+    req.method = "PUT";
   }
 
   next();
 });
 
-buyPhotoRouter.post("/catalog/:photoId", async (req, res) => {
+buyPhotoRouter.put("/catalog/:photoId/comment", async (req, res) => {
   const photo = await commentPhoto(req.params.photoId);
   const { comment } = req.body;
 

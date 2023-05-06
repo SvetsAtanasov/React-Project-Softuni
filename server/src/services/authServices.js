@@ -47,14 +47,11 @@ async function login(username, password) {
     username: user.username,
   };
 
-  const token = await jwt.sign(payload, SECRET, { expiresIn: "10s" });
-  const buffer = Buffer.from(token, "base64").toString("binary");
-  const regexBuffer = new RegExp(/\"[exp]+\"\:[0-9]*/, "g");
-  const exp = buffer.match(regexBuffer)[0].split(":")[1];
+  const token = await jwt.sign(payload, SECRET, { expiresIn: "2h" });
+
   const returnToken = {
     token: token,
     username: user.username,
-    exp: exp,
   };
 
   return returnToken;

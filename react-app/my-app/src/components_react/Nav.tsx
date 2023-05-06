@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container } from "react-bootstrap";
 import {
-  faBook,
+  faCamera,
   faHouse,
-  faPhotoVideo,
+  faPlusCircle,
   faSignIn,
   faSignOut,
   faUserPlus,
@@ -16,12 +16,12 @@ import { AuthStore } from "../context/AuthStore";
 const navNotLogged = [
   {
     title: "Home",
-    icon: faBook,
+    icon: faHouse,
     to: "/",
   },
   {
     title: "Catalog",
-    icon: faHouse,
+    icon: faCamera,
     to: "/catalog",
   },
   {
@@ -39,17 +39,17 @@ const navNotLogged = [
 const navLogged = [
   {
     title: "Home",
-    icon: faBook,
+    icon: faHouse,
     to: "/",
   },
   {
     title: "Catalog",
-    icon: faHouse,
+    icon: faCamera,
     to: "/catalog",
   },
   {
     title: "Create",
-    icon: faPhotoVideo,
+    icon: faPlusCircle,
     to: "/create",
   },
 ];

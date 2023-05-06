@@ -34,6 +34,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
   );
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
+  const [formData, setFormData] = useState<string>("");
 
   const postRef = useRef<any>(null);
   const navigate = useNavigate();
@@ -44,6 +45,16 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
   const handleLikePost = () => {
     setIsLiked(!isLiked);
+  };
+
+  const handleChange = (e: any) => {
+    setFormData(e.target.value);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const res = requestHandler("PUT", "");
   };
 
   const handleLikeDislikePost = useCallback(async () => {
@@ -133,14 +144,10 @@ const Post = ({ photo, ws }: CustomPostProps) => {
         </div>
 
         <div className="comment-form">
-          <form
-            className="d-flex"
-            onSubmit={(e: any) => {
-              e.preventDefault();
-            }}
-          >
+          <form className="d-flex" onSubmit={(e: any) => handleSubmit(e)}>
             <input
-              onChange={() => {}}
+              value={formData}
+              onChange={(e: any) => handleChange(e)}
               name="comment"
               placeholder="Write your comment..."
             />
