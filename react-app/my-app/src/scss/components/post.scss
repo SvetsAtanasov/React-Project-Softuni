@@ -22,6 +22,10 @@
     background-color: white;
 
     .buttons-container {
+      .like-wrapper {
+        height: 16px;
+      }
+
       .like-button {
         cursor: pointer;
       }

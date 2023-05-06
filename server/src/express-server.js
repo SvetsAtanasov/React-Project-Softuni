@@ -72,7 +72,12 @@ wss.on("connection", (ws) => {
   ws.on("message", async (message) => {
     const parsedMessage = JSON.parse(message);
 
-    if (parsedMessage.type === "Like_Post") {
+    console.log(parsedMessage);
+
+    if (
+      parsedMessage.type === "Like_Post" ||
+      parsedMessage.type === "Comment_Post"
+    ) {
       try {
         const posts = await getAllPhotos();
 

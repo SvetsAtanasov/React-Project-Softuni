@@ -11,6 +11,8 @@
     height: auto; }
   .post .footer-container {
     background-color: white; }
+    .post .footer-container .buttons-container .like-wrapper {
+      height: 16px; }
     .post .footer-container .buttons-container .like-button {
       cursor: pointer; }
     .post .footer-container .comments-container .collapse,

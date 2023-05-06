@@ -39,23 +39,29 @@ deletePhotoRouter.get("/catalog/:photoId/delete", async (req, res) => {
   res.redirect("/catalog");
 });
 
-buyPhotoRouter.use((req, res, next) => {
-  if (req.query.method == "POST") {
-    req.method = "PUT";
-  }
+// buyPhotoRouter.use((req, res, next) => {
+//   req.method = "PUT";
 
-  next();
-});
+//   next();
+// });
 
 buyPhotoRouter.put("/catalog/:photoId/comment", async (req, res) => {
-  const photo = await commentPhoto(req.params.photoId);
-  const { comment } = req.body;
+  try {
+    const { id, commentObj } = req.body;
+    const photo = await commentPhoto(id);
 
-  photo.commentList.push({ userId: req.user._id, comment: comment });
+    photo.commentList.push({
+      userId: commentObj.userId,
+      username: commentObj.username,
+      comment: commentObj.comment,
+    });
 
-  await photo.save();
+    await photo.save();
 
-  res.redirect("/catalog");
+    res.status(200).send("Updated");
+  } catch (err) {
+    res.status(404).send(err.message);
+  }
 });
 
 editPhotoRouter.use((req, res, next) => {

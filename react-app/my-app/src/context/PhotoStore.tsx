@@ -10,7 +10,7 @@ export type Photo = {
   handleGetCreatePhotoRoute: (dispatchToken: any, token: any) => any;
   handleCreatePhoto: (photo: any) => any;
   allPhotos: any;
-  handleSendMessageToServer: () => void;
+  handleSendMessageToServer: (messageType: string) => void;
 };
 
 export const PhotoStore = createContext<Photo>({
@@ -18,7 +18,7 @@ export const PhotoStore = createContext<Photo>({
   handleGetCreatePhotoRoute: (dispatchToken: any) => {},
   handleCreatePhoto: () => {},
   allPhotos: [],
-  handleSendMessageToServer: () => {},
+  handleSendMessageToServer: (messageType: string) => {},
 });
 
 const { Provider } = PhotoStore;
@@ -27,8 +27,8 @@ export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
 
-  const handleSendMessageToServer = () => {
-    client.send(JSON.stringify({ type: "Like_Post" }));
+  const handleSendMessageToServer = (messageType: string) => {
+    client.send(JSON.stringify({ type: messageType }));
   };
 
   useEffect(() => {

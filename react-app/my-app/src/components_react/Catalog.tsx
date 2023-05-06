@@ -3,7 +3,7 @@ import Post from "./Post";
 
 export type CustomCatalogProps = React.PropsWithChildren<{
   photos: any;
-  ws: () => void;
+  ws: (messageType: string) => void;
 }>;
 
 const Catalog = ({ photos, ws }: CustomCatalogProps) => {

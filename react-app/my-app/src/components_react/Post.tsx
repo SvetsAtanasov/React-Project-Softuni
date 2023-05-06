@@ -20,7 +20,7 @@ export type CustomPostProps = React.PropsWithChildren<{
     owner: { userId: string; username: string };
     timestamp: string;
   };
-  ws: () => void;
+  ws: (messageType: string) => void;
 }>;
 
 const Post = ({ photo, ws }: CustomPostProps) => {
@@ -51,18 +51,41 @@ const Post = ({ photo, ws }: CustomPostProps) => {
     setFormData(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: any) => {
+      e.preventDefault();
 
-    const res = requestHandler("PUT", "");
-  };
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const res = await requestHandler(
+          "PUT",
+          `http://localhost:7777/catalog/${postRef.current.dataset.id}/comment`,
+          JSON.parse(token),
+          {
+            id: postRef.current.dataset.id,
+            commentObj: { userId: null, username: username, comment: formData },
+          }
+        );
+
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          window.dispatchEvent(new Event("storage"));
+          navigate("/login");
+        }
+
+        ws("Comment_Post");
+      }
+    },
+    [formData, username, ws, navigate]
+  );
 
   const handleLikeDislikePost = useCallback(async () => {
     const token = localStorage.getItem("token");
 
     if (token) {
       const res = await requestHandler(
-        "PUT",
+        "POST",
         `http://localhost:7777/catalog/${postRef.current.dataset.id}/like`,
         JSON.parse(token),
         {
@@ -77,7 +100,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
         navigate("/login");
       }
 
-      ws();
+      ws("Like_Post");
     } else {
       navigate("/login");
     }
@@ -100,7 +123,10 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
       <div className="p-2 footer-container">
         <div className="buttons-container">
-          <div className="d-inline-block" onClick={handleLikeDislikePost}>
+          <div
+            className="like-wrapper d-inline-flex"
+            onClick={handleLikeDislikePost}
+          >
             <FontAwesomeIcon
               className="like-button"
               icon={isLiked ? faHeart : faHeartOutlined}
@@ -113,35 +139,52 @@ const Post = ({ photo, ws }: CustomPostProps) => {
           <span className="likes">{`${photo.likes.length} likes`}</span>
         </div>
 
-        <div className="py-2 comments-container d-flex">
-          {commentsExpanded ? (
-            <>
-              <div className="comment-username"></div>
-              <div className="comment"></div>
-            </>
-          ) : (
-            <>
-              <div className="comment-username"></div>
-              <div className="comment"></div>
-            </>
-          )}
+        {photo.commentList.length > 0 && (
+          <div className="py-2 comments-container d-flex flex-column">
+            {commentsExpanded ? (
+              <span
+                className="d-block collapse"
+                onClick={() => handleExpandComments()}
+              >
+                Collapse Comments
+              </span>
+            ) : (
+              <span
+                className="d-block expand"
+                onClick={() => handleExpandComments()}
+              >
+                Expand Comments
+              </span>
+            )}
 
-          {commentsExpanded ? (
-            <span
-              className="d-block collapse"
-              onClick={() => handleExpandComments()}
-            >
-              Collapse Comments
-            </span>
-          ) : (
-            <span
-              className="d-block expand"
-              onClick={() => handleExpandComments()}
-            >
-              Expand Comments
-            </span>
-          )}
-        </div>
+            {commentsExpanded ? (
+              photo.commentList.map(
+                (comment: {
+                  userId: string;
+                  username: string;
+                  comment: string;
+                }) => (
+                  <div className="comment-wrapper d-flex">
+                    <div className="me-3 comment-username">
+                      {comment.username}
+                    </div>
+                    <div className="comment">{comment.comment}</div>
+                  </div>
+                )
+              )
+            ) : (
+              <></>
+              // <div className="comment-wrapper d-flex">
+              //   <div className="comment-username">
+              //     {photo.commentList[photo.commentList.length].username}
+              //   </div>
+              //   <div className="comment">
+              //     {photo.commentList[photo.commentList.length].comment}
+              //   </div>
+              // </div>
+            )}
+          </div>
+        )}
 
         <div className="comment-form">
           <form className="d-flex" onSubmit={(e: any) => handleSubmit(e)}>
