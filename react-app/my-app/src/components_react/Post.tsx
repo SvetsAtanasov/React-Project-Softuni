@@ -6,6 +6,7 @@ import { Button } from "react-bootstrap";
 import { AuthStore } from "../context/AuthStore";
 import { requestHandler, photoTimestampHandler } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
+import Comment from "./Comment";
 
 export type CustomPostProps = React.PropsWithChildren<{
   photo: {
@@ -143,44 +144,35 @@ const Post = ({ photo, ws }: CustomPostProps) => {
         {photo.commentList.length > 0 && (
           <div className="py-2 comments-container d-flex flex-column">
             {commentsExpanded ? (
-              <span
-                className="d-block collapse"
-                onClick={() => handleExpandComments()}
-              >
-                Collapse Comments
-              </span>
-            ) : (
-              <span
-                className="d-block expand"
-                onClick={() => handleExpandComments()}
-              >
-                Expand Comments
-              </span>
-            )}
+              <div>
+                <span
+                  className="d-block collapse"
+                  onClick={() => handleExpandComments()}
+                >
+                  Collapse Comments
+                </span>
 
-            {commentsExpanded ? (
-              photo.commentList.map(
-                (comment: {
-                  userId: string;
-                  username: string;
-                  comment: string;
-                }) => (
-                  <div className="comment-wrapper d-flex">
-                    <div className="me-3 comment-username">
-                      {comment.username}
-                    </div>
-                    <div className="comment">{comment.comment}</div>
-                  </div>
-                )
-              )
+                {photo.commentList.map(
+                  (comment: {
+                    userId: string;
+                    username: string;
+                    comment: string;
+                  }) => (
+                    <Comment comment={comment} />
+                  )
+                )}
+              </div>
             ) : (
-              <div className="comment-wrapper d-flex">
-                <div className="me-3 comment-username">
-                  {photo.commentList[photo.commentList.length - 1].username}
-                </div>
-                <div className="comment">
-                  {photo.commentList[photo.commentList.length - 1].comment}
-                </div>
+              <div>
+                <span
+                  className="d-block expand"
+                  onClick={() => handleExpandComments()}
+                >
+                  Expand Comments
+                </span>
+                <Comment
+                  comment={photo.commentList[photo.commentList.length - 1]}
+                />
               </div>
             )}
           </div>

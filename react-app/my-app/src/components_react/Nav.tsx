@@ -10,6 +10,7 @@ import {
   faSignOut,
   faUserPlus,
   faBars,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 
@@ -37,6 +38,11 @@ const navNotLogged = [
 ];
 
 const navLogged = [
+  {
+    title: "Profile",
+    icon: faUser,
+    to: "/profile",
+  },
   {
     title: "Home",
     icon: faHouse,
