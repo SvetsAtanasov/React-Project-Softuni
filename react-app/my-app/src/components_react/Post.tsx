@@ -195,7 +195,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
               placeholder="Write your comment..."
             />
             <Button
-              disabled={!formData}
+              disabled={!formData.trim()}
               className="ms-auto"
               variant={"dark"}
               type="submit"

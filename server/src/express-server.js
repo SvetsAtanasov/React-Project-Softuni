@@ -63,9 +63,11 @@ const wss = new WebSocketServer({
   path: "/catalog",
 });
 
-const connectedClients = [];
+let connectedClients = [];
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws, req) => {
+  ws.id = req.headers["sec-websocket-key"];
+
   connectedClients.push(ws);
   console.log("WebSocket connection established");
 
@@ -92,6 +94,9 @@ wss.on("connection", (ws) => {
 
   ws.on("close", () => {
     console.log("WebSocket connection closed");
+    connectedClients = connectedClients.filter(
+      (x) => x.id !== req.headers["sec-websocket-key"]
+    );
   });
 });
 
