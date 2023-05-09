@@ -153,12 +153,15 @@ const Post = ({ photo, ws }: CustomPostProps) => {
                 </span>
 
                 {photo.commentList.map(
-                  (comment: {
-                    userId: string;
-                    username: string;
-                    comment: string;
-                  }) => (
-                    <Comment comment={comment} />
+                  (
+                    comment: {
+                      userId: string;
+                      username: string;
+                      comment: string;
+                    },
+                    idx: number
+                  ) => (
+                    <Comment key={idx} comment={comment} />
                   )
                 )}
               </div>

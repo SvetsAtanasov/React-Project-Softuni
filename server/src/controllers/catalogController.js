@@ -87,12 +87,6 @@ editPhotoRouter
     res.redirect("/catalog");
   });
 
-likePhotoRouter.use((req, res, next) => {
-  req.method = "PUT";
-
-  next();
-});
-
 likePhotoRouter.put("/catalog/:photoId/like", async (req, res) => {
   const { id, likeObj } = req.body;
   const photo = await likePhoto(id);

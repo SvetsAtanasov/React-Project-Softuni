@@ -96,6 +96,18 @@
         width: 75%;
         transition: all 0.4s; }
 
+.dialog .dots {
+  cursor: pointer; }
+
+.dialog .dialog-container {
+  min-width: 100px;
+  min-height: 100px;
+  background-color: silver;
+  z-index: 1;
+  right: 0; }
+  .dialog .dialog-container span {
+    cursor: pointer; }
+
 body {
   background-color: #3e3e42; }
 

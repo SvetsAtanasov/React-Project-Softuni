@@ -167,7 +167,7 @@ export const AuthProvider = ({ children }: any) => {
       localStorage.removeItem("token");
       window.dispatchEvent(new Event("storage"));
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Provider
