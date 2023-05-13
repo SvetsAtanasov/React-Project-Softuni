@@ -16,7 +16,12 @@ export type CustomPostProps = React.PropsWithChildren<{
     age: number;
     description: string;
     location: string;
-    commentList: { userId: string; username: string; comment: string }[];
+    commentList: {
+      userId: string;
+      username: string;
+      comment: string;
+      _id: string;
+    }[];
     likes: { userId: string; username: string; like: boolean }[];
     owner: { userId: string; username: string };
     timestamp: string;
@@ -38,6 +43,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
   const [formData, setFormData] = useState<string>("");
 
   const postRef = useRef<any>(null);
+
   const navigate = useNavigate();
 
   const handleExpandComments = () => {
@@ -51,6 +57,32 @@ const Post = ({ photo, ws }: CustomPostProps) => {
   const handleChange = (e: any) => {
     setFormData(e.target.value);
   };
+
+  const handleDeleteComment = useCallback(
+    async (ref: any) => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const res = await requestHandler(
+          "DELETE",
+          `http://localhost:7777/catalog/${ref.current.dataset.id}/delete`,
+          JSON.parse(token),
+          {
+            postId: postRef.current.dataset.id,
+            commentId: ref.current.dataset.id,
+          }
+        );
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          window.dispatchEvent(new Event("storage"));
+          navigate("/login");
+        }
+        ws("Delete_Post");
+        setFormData("");
+      }
+    },
+    [navigate, ws]
+  );
 
   const handleSubmit = useCallback(
     async (e: any) => {
@@ -158,10 +190,15 @@ const Post = ({ photo, ws }: CustomPostProps) => {
                       userId: string;
                       username: string;
                       comment: string;
+                      _id: string;
                     },
                     idx: number
                   ) => (
-                    <Comment key={idx} comment={comment} />
+                    <Comment
+                      handleDeleteComment={handleDeleteComment}
+                      key={idx}
+                      comment={comment}
+                    />
                   )
                 )}
               </div>
@@ -174,6 +211,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
                   Expand Comments
                 </span>
                 <Comment
+                  handleDeleteComment={handleDeleteComment}
                   comment={photo.commentList[photo.commentList.length - 1]}
                 />
               </div>

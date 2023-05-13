@@ -78,7 +78,8 @@ wss.on("connection", (ws, req) => {
 
     if (
       parsedMessage.type === "Like_Post" ||
-      parsedMessage.type === "Comment_Post"
+      parsedMessage.type === "Comment_Post" ||
+      parsedMessage.type === "Delete_Post"
     ) {
       try {
         const posts = await getAllPhotos();

@@ -33,17 +33,17 @@ detailsPhotoRouter.get("/catalog/:photoId", async (req, res) => {
   });
 });
 
-deletePhotoRouter.get("/catalog/:photoId/delete", async (req, res) => {
-  await deletePhoto(req.params.photoId);
+deletePhotoRouter.delete("/catalog/:photoId/delete", async (req, res) => {
+  const { postId, commentId } = req.body;
 
-  res.redirect("/catalog");
+  try {
+    await deletePhoto(postId, commentId);
+
+    res.status(200).send("Deleted");
+  } catch (err) {
+    res.status(404).send("Not Found");
+  }
 });
-
-// buyPhotoRouter.use((req, res, next) => {
-//   req.method = "PUT";
-
-//   next();
-// });
 
 buyPhotoRouter.put("/catalog/:photoId/comment", async (req, res) => {
   try {

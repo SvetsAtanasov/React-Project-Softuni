@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export type CustomDialogProps = React.PropsWithChildren<{
   open: boolean;
-  handleOpen: (open: boolean) => any;
+  handleOpen: (e: any) => any;
   options: { title: string; handler: () => void }[];
 }>;
 
@@ -22,7 +22,13 @@ const Dialog = ({ open, handleOpen, options }: CustomDialogProps) => {
         {options &&
           options.map(
             (option: { title: string; handler: () => void }, idx: number) => (
-              <span onClick={option.handler} key={idx}>
+              <span
+                onClick={() => {
+                  option.handler();
+                  handleOpen(false);
+                }}
+                key={idx}
+              >
                 {option.title}
               </span>
             )

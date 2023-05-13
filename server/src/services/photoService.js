@@ -33,8 +33,11 @@ function findOne(id) {
   return Photo.findById(id);
 }
 
-function deletePhoto(id) {
-  return Photo.deleteOne({ _id: id });
+async function deletePhoto(postId, commentId) {
+  return Photo.updateOne(
+    { _id: postId },
+    { $pull: { commentList: { _id: commentId } } }
+  );
 }
 
 function commentPhoto(id) {
