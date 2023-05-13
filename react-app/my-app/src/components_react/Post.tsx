@@ -72,6 +72,35 @@ const Post = ({ photo, ws }: CustomPostProps) => {
             commentId: ref.current.dataset.id,
           }
         );
+
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          window.dispatchEvent(new Event("storage"));
+          navigate("/login");
+        }
+        ws("Delete_Post");
+        setFormData("");
+      }
+    },
+    [navigate, ws]
+  );
+
+  const handleEditPhotoComment = useCallback(
+    async (ref: any, commentValue: string) => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const res = await requestHandler(
+          "PUT",
+          `http://localhost:7777/catalog/${postRef.current.dataset.id}/edit`,
+          JSON.parse(token),
+          {
+            postId: postRef.current.dataset.id,
+            commentId: ref.current.dataset.id,
+            commentValue,
+          }
+        );
+
         if (res.status === 401) {
           localStorage.removeItem("token");
           window.dispatchEvent(new Event("storage"));
@@ -119,7 +148,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
     if (token) {
       const res = await requestHandler(
-        "POST",
+        "PUT",
         `http://localhost:7777/catalog/${postRef.current.dataset.id}/like`,
         JSON.parse(token),
         {
@@ -178,7 +207,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
             {commentsExpanded ? (
               <div>
                 <span
-                  className="d-block collapse"
+                  className="d-inline collapse"
                   onClick={() => handleExpandComments()}
                 >
                   Collapse Comments
@@ -196,6 +225,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
                   ) => (
                     <Comment
                       handleDeleteComment={handleDeleteComment}
+                      handleEditPhotoComment={handleEditPhotoComment}
                       key={idx}
                       comment={comment}
                     />
@@ -205,13 +235,14 @@ const Post = ({ photo, ws }: CustomPostProps) => {
             ) : (
               <div>
                 <span
-                  className="d-block expand"
+                  className="d-inline expand"
                   onClick={() => handleExpandComments()}
                 >
                   Expand Comments
                 </span>
                 <Comment
                   handleDeleteComment={handleDeleteComment}
+                  handleEditPhotoComment={handleEditPhotoComment}
                   comment={photo.commentList[photo.commentList.length - 1]}
                 />
               </div>
@@ -230,7 +261,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
             <Button
               disabled={!formData.trim()}
               className="ms-auto"
-              variant={"dark"}
+              variant="dark"
               type="submit"
             >
               Comment

@@ -33,10 +33,17 @@ function findOne(id) {
   return Photo.findById(id);
 }
 
-async function deletePhoto(postId, commentId) {
+function deletePhotoComment(postId, commentId) {
   return Photo.updateOne(
     { _id: postId },
     { $pull: { commentList: { _id: commentId } } }
+  );
+}
+
+function editPhotoComment(postId, commentId, commentValue) {
+  return Photo.updateOne(
+    { "commentList._id": commentId },
+    { $set: { "commentList.$.comment": commentValue } }
   );
 }
 
@@ -56,9 +63,10 @@ module.exports = {
   getAllPhotos,
   createPhoto,
   findOne,
-  deletePhoto,
+  deletePhotoComment,
   commentPhoto,
   updatePhoto,
   getAllUserCreatedPhotos,
   likePhoto,
+  editPhotoComment,
 };

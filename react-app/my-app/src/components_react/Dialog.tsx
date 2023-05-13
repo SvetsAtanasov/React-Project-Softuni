@@ -15,8 +15,8 @@ const Dialog = ({ open, handleOpen, options }: CustomDialogProps) => {
       </div>
 
       <div
-        className={`dialog-container p-2 position-absolute ${
-          open ? "d-block" : "d-none"
+        className={`dialog-container p-2 position-absolute flex-column ${
+          open ? "d-flex" : "d-none"
         }`}
       >
         {options &&

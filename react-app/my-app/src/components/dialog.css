@@ -1,0 +1,11 @@
+.dialog .dots {
+  cursor: pointer; }
+
+.dialog .dialog-container {
+  min-width: 100px;
+  border-radius: 5px;
+  background-color: silver;
+  z-index: 1;
+  right: 0; }
+  .dialog .dialog-container span {
+    cursor: pointer; }

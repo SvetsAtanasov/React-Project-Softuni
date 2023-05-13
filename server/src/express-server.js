@@ -31,7 +31,7 @@ const {
   catalogRouter,
   detailsPhotoRouter,
   deletePhotoRouter,
-  buyPhotoRouter,
+  commentPhotoRouter,
   editPhotoRouter,
   likePhotoRouter,
 } = require("./controllers/catalogController");
@@ -48,7 +48,7 @@ app.use("/", logoutRouter);
 app.use("/", catalogRouter);
 app.use("/", detailsPhotoRouter);
 app.use("/", deletePhotoRouter);
-app.use("/", buyPhotoRouter);
+app.use("/", commentPhotoRouter);
 app.use("/", editPhotoRouter);
 app.use("/", profileController);
 app.use("/", likePhotoRouter);

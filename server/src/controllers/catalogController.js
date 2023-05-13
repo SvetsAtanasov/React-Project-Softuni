@@ -1,16 +1,17 @@
 const catalogRouter = require("express").Router();
 const detailsPhotoRouter = require("express").Router();
 const deletePhotoRouter = require("express").Router();
-const buyPhotoRouter = require("express").Router();
+const commentPhotoRouter = require("express").Router();
 const editPhotoRouter = require("express").Router();
 const likePhotoRouter = require("express").Router();
 const {
   getAllPhotos,
   findOne,
-  deletePhoto,
+  deletePhotoComment,
   commentPhoto,
   updatePhoto,
   likePhoto,
+  editPhotoComment,
 } = require("../services/photoService");
 
 catalogRouter.get("/catalog", async (req, res) => {
@@ -37,7 +38,7 @@ deletePhotoRouter.delete("/catalog/:photoId/delete", async (req, res) => {
   const { postId, commentId } = req.body;
 
   try {
-    await deletePhoto(postId, commentId);
+    await deletePhotoComment(postId, commentId);
 
     res.status(200).send("Deleted");
   } catch (err) {
@@ -45,7 +46,7 @@ deletePhotoRouter.delete("/catalog/:photoId/delete", async (req, res) => {
   }
 });
 
-buyPhotoRouter.put("/catalog/:photoId/comment", async (req, res) => {
+commentPhotoRouter.put("/catalog/:photoId/comment", async (req, res) => {
   try {
     const { id, commentObj } = req.body;
     const photo = await commentPhoto(id);
@@ -72,20 +73,20 @@ editPhotoRouter.use((req, res, next) => {
   next();
 });
 
-editPhotoRouter
-  .get("/catalog/:photoId/edit", async (req, res) => {
-    const photo = await findOne(req.params.photoId).lean();
+editPhotoRouter.put("/catalog/:photoId/edit", async (req, res) => {
+  const { postId, commentId, commentValue } = req.body;
+  console.log(commentId);
+  try {
+    await editPhotoComment(postId, commentId, commentValue);
+    // post.commentList.find((x) => x._id.toString() === commentId).comment =
+    //   commentValue;
+    // await post.save();
 
-    res.render("edit", { photo: photo });
-  })
-  .put("/catalog/:photoId/edit", async (req, res) => {
-    const { name, image, age, description, location } = req.body;
-    const photo = { name, image, age, description, location };
-
-    await updatePhoto(req.params.photoId, photo);
-
-    res.redirect("/catalog");
-  });
+    res.status(200).send("Edited Comment");
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
 
 likePhotoRouter.put("/catalog/:photoId/like", async (req, res) => {
   const { id, likeObj } = req.body;
@@ -107,7 +108,7 @@ module.exports = {
   catalogRouter,
   detailsPhotoRouter,
   deletePhotoRouter,
-  buyPhotoRouter,
+  commentPhotoRouter,
   editPhotoRouter,
   likePhotoRouter,
 };
