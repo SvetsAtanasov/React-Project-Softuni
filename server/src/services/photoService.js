@@ -40,7 +40,7 @@ function deletePhotoComment(postId, commentId) {
   );
 }
 
-function editPhotoComment(postId, commentId, commentValue) {
+function editPhotoComment(commentId, commentValue) {
   return Photo.updateOne(
     { "commentList._id": commentId },
     { $set: { "commentList.$.comment": commentValue } }

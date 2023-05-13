@@ -95,7 +95,6 @@ const Post = ({ photo, ws }: CustomPostProps) => {
           `http://localhost:7777/catalog/${postRef.current.dataset.id}/edit`,
           JSON.parse(token),
           {
-            postId: postRef.current.dataset.id,
             commentId: ref.current.dataset.id,
             commentValue,
           }

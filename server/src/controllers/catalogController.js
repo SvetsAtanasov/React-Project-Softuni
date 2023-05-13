@@ -74,13 +74,9 @@ editPhotoRouter.use((req, res, next) => {
 });
 
 editPhotoRouter.put("/catalog/:photoId/edit", async (req, res) => {
-  const { postId, commentId, commentValue } = req.body;
-  console.log(commentId);
+  const { commentId, commentValue } = req.body;
   try {
-    await editPhotoComment(postId, commentId, commentValue);
-    // post.commentList.find((x) => x._id.toString() === commentId).comment =
-    //   commentValue;
-    // await post.save();
+    await editPhotoComment(commentId, commentValue);
 
     res.status(200).send("Edited Comment");
   } catch (err) {
