@@ -22,16 +22,7 @@ catalogRouter.get("/catalog", async (req, res) => {
 detailsPhotoRouter.get("/catalog/:photoId", async (req, res) => {
   const photo = await findOne(req.params.photoId).lean();
 
-  let isOwner = undefined;
-
-  if (req.user) {
-    isOwner = photo.owner == req.user._id;
-  }
-
-  res.render("details", {
-    photo: photo,
-    isOwner: isOwner,
-  });
+  res.status(200).json(photo);
 });
 
 deletePhotoRouter.delete("/catalog/:photoId/delete", async (req, res) => {

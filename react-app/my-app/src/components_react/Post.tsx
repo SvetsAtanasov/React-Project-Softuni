@@ -1,12 +1,13 @@
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartOutlined } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { AuthStore } from "../context/AuthStore";
 import { requestHandler, photoTimestampHandler } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import Comment from "./Comment";
+import Dialog from "./Dialog";
 
 export type CustomPostProps = React.PropsWithChildren<{
   photo: {
@@ -30,19 +31,29 @@ export type CustomPostProps = React.PropsWithChildren<{
 }>;
 
 const Post = ({ photo, ws }: CustomPostProps) => {
-  const [commentsExpanded, setCommentsExpanded] = useState<boolean>();
+  const [open, setOpen] = useState<boolean>(false);
+  const [commentsExpanded, setCommentsExpanded] = useState<boolean>(false);
   const { username } = useContext(AuthStore);
-  const [isLiked, setIsLiked] = useState(
+  const [isLiked, setIsLiked] = useState<boolean | undefined>(
     photo.likes.find(
       (x: { userId: string; username: string; like: boolean }) =>
         x.username === username
     )?.like
   );
+
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
   const [formData, setFormData] = useState<string>("");
-
   const postRef = useRef<any>(null);
+
+  const dialogOptions = [
+    {
+      title: "Open Post",
+      handler: () => {
+        navigate(`/catalog/${postRef.current.dataset.id}`);
+      },
+    },
+  ];
 
   const navigate = useNavigate();
 
@@ -56,6 +67,10 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
   const handleChange = (e: any) => {
     setFormData(e.target.value);
+  };
+
+  const toggleOpen = (open: boolean) => {
+    setOpen(open);
   };
 
   const handleDeleteComment = useCallback(
@@ -176,7 +191,8 @@ const Post = ({ photo, ws }: CustomPostProps) => {
     >
       <div className="p-2 photo-information-container d-flex flex-row">
         <span className="username">{photo.owner.username}</span>
-        <span className="location ms-auto">{photo.location}</span>
+        <span className="ms-auto me-3 location">{photo.location}</span>
+        <Dialog handleOpen={toggleOpen} open={open} options={dialogOptions} />
       </div>
 
       <div className="image-container">

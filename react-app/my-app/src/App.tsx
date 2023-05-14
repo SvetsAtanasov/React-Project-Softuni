@@ -11,6 +11,7 @@ import RegisterPage from "./pages/Register";
 import { AuthProvider } from "./context/AuthStore";
 import PhotoProvider from "./context/PhotoStore";
 import Create from "./pages/Create";
+import PostPage from "./pages/Post";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/catalog/:photoId" element={<PostPage />} />
             <Route path="/create" element={<Create />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

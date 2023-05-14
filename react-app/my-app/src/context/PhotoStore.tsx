@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -9,16 +9,20 @@ export type Photo = {
   handleGetAllPhotos: () => any;
   handleGetCreatePhotoRoute: (dispatchToken: any, token: any) => any;
   handleCreatePhoto: (photo: any) => any;
-  allPhotos: any;
   handleSendMessageToServer: (messageType: string) => void;
+  handleGetSpecificPhoto: (params: any) => any;
+  photo: any;
+  allPhotos: any;
 };
 
 export const PhotoStore = createContext<Photo>({
   handleGetAllPhotos: () => {},
   handleGetCreatePhotoRoute: (dispatchToken: any) => {},
   handleCreatePhoto: () => {},
-  allPhotos: [],
   handleSendMessageToServer: (messageType: string) => {},
+  handleGetSpecificPhoto: (params: any) => {},
+  photo: {},
+  allPhotos: [],
 });
 
 const { Provider } = PhotoStore;
@@ -26,6 +30,7 @@ const { Provider } = PhotoStore;
 export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
+  const [photo, setPhoto] = useState({});
 
   const handleSendMessageToServer = (messageType: string) => {
     client.send(JSON.stringify({ type: messageType }));
@@ -53,6 +58,18 @@ export const PhotoProvider = ({ children }: any) => {
 
       setPhotos((arr: any) => (arr = photos));
     } catch (err: any) {}
+  }, []);
+
+  const handleGetSpecificPhoto = useCallback(async (params: any) => {
+    console.log(params.photoId);
+    const res = await requestHandler(
+      "GET",
+      `http://localhost:7777/catalog/${params.photoId}`
+    );
+
+    const photo = await res.json();
+
+    setPhoto(photo);
   }, []);
 
   const handleCreatePhoto = useCallback(
@@ -100,6 +117,8 @@ export const PhotoProvider = ({ children }: any) => {
         handleGetAllPhotos,
         handleGetCreatePhotoRoute,
         handleCreatePhoto,
+        handleGetSpecificPhoto,
+        photo,
         allPhotos,
       }}
     >
