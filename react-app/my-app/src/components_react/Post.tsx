@@ -34,12 +34,7 @@ const Post = ({ photo, ws }: CustomPostProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [commentsExpanded, setCommentsExpanded] = useState<boolean>(false);
   const { username } = useContext(AuthStore);
-  const [isLiked, setIsLiked] = useState<boolean | undefined>(
-    photo.likes.find(
-      (x: { userId: string; username: string; like: boolean }) =>
-        x.username === username
-    )?.like
-  );
+  const [isLiked, setIsLiked] = useState<boolean | undefined>(false);
 
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
@@ -182,6 +177,17 @@ const Post = ({ photo, ws }: CustomPostProps) => {
       navigate("/login");
     }
   }, [postRef, navigate, isLiked, username, ws]);
+
+  useEffect(() => {
+    const isLiked = photo.likes.find(
+      (x: { userId: string; username: string; like: boolean }) =>
+        x.username === username
+    )?.like;
+
+    setIsLiked(isLiked);
+  }, [username, photo.likes]);
+
+  console.log(isLiked);
 
   return (
     <div

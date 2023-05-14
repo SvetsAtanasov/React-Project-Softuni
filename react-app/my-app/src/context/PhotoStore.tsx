@@ -30,7 +30,41 @@ const { Provider } = PhotoStore;
 export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
-  const [photo, setPhoto] = useState({});
+  const [photo, setPhoto] = useState<{
+    _id: string;
+    name: string;
+    image: string;
+    age: number;
+    description: string;
+    location: string;
+    commentList: {
+      userId: string;
+      username: string;
+      comment: string;
+      _id: string;
+    }[];
+    likes: { userId: string; username: string; like: boolean }[];
+    owner: { userId: string; username: string };
+    timestamp: string;
+  }>({
+    _id: "",
+    name: "",
+    image: "",
+    age: 0,
+    description: "",
+    location: "",
+    commentList: [
+      {
+        userId: "",
+        username: "",
+        comment: "",
+        _id: "",
+      },
+    ],
+    likes: [{ userId: "", username: "", like: false }],
+    owner: { userId: "", username: "" },
+    timestamp: "",
+  });
 
   const handleSendMessageToServer = (messageType: string) => {
     client.send(JSON.stringify({ type: messageType }));
@@ -61,7 +95,6 @@ export const PhotoProvider = ({ children }: any) => {
   }, []);
 
   const handleGetSpecificPhoto = useCallback(async (params: any) => {
-    console.log(params.photoId);
     const res = await requestHandler(
       "GET",
       `http://localhost:7777/catalog/${params.photoId}`
