@@ -1,13 +1,58 @@
-import { Suspense, lazy, useEffect, useContext } from "react";
+import { Suspense, lazy, useEffect, useState, useCallback } from "react";
 import { Spinner } from "react-bootstrap";
-import { PhotoStore } from "../context/PhotoStore";
 import { useParams } from "react-router-dom";
+import { requestHandler } from "../utils/utils";
 
 const Post = lazy(() => import("../components_react/Post"));
 
 const PostPage = () => {
-  const { handleGetSpecificPhoto, photo } = useContext(PhotoStore);
+  const [photo, setPhoto] = useState<{
+    _id: string;
+    name: string;
+    image: string;
+    age: number;
+    description: string;
+    location: string;
+    commentList: {
+      userId: string;
+      username: string;
+      comment: string;
+      _id: string;
+    }[];
+    likes: { userId: string; username: string; like: boolean }[];
+    owner: { userId: string; username: string };
+    timestamp: string;
+  }>({
+    _id: "",
+    name: "",
+    image: "",
+    age: 0,
+    description: "",
+    location: "",
+    commentList: [
+      {
+        userId: "",
+        username: "",
+        comment: "",
+        _id: "",
+      },
+    ],
+    likes: [{ userId: "", username: "", like: false }],
+    owner: { userId: "", username: "" },
+    timestamp: "",
+  });
   const params = useParams();
+
+  const handleGetSpecificPhoto = useCallback(async (params: any) => {
+    const res = await requestHandler(
+      "GET",
+      `http://localhost:7777/catalog/${params.photoId}`
+    );
+
+    const photo = await res.json();
+
+    setPhoto(photo);
+  }, []);
 
   useEffect(() => {
     handleGetSpecificPhoto(params);

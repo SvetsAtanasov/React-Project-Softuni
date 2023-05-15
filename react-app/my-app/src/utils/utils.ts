@@ -1,7 +1,7 @@
 const generateHeaders = (
   token: any
 ): { "Content-Type": string; authorization?: any } =>
-  token
+  token !== null
     ? {
         "Content-Type": "application/json",
         authorization: JSON.stringify(token),

@@ -100,6 +100,7 @@ export const AuthProvider = ({ children }: any) => {
         type: "set_error",
         nextError: err.message,
       });
+
       setTimeout(() => {
         dispatchPayload({
           type: "set_error",

@@ -27,10 +27,11 @@ export type CustomPostProps = React.PropsWithChildren<{
     owner: { userId: string; username: string };
     timestamp: string;
   };
+  isSpecificPhoto?: boolean;
   ws: (messageType: string) => void;
 }>;
 
-const Post = ({ photo, ws }: CustomPostProps) => {
+const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [commentsExpanded, setCommentsExpanded] = useState<boolean>(false);
   const { username } = useContext(AuthStore);
@@ -147,6 +148,8 @@ const Post = ({ photo, ws }: CustomPostProps) => {
 
         ws("Comment_Post");
         setFormData("");
+      } else {
+        navigate("/login");
       }
     },
     [formData, username, ws, navigate]
@@ -187,8 +190,6 @@ const Post = ({ photo, ws }: CustomPostProps) => {
     setIsLiked(isLiked);
   }, [username, photo.likes]);
 
-  console.log(isLiked);
-
   return (
     <div
       ref={postRef}
@@ -198,7 +199,9 @@ const Post = ({ photo, ws }: CustomPostProps) => {
       <div className="p-2 photo-information-container d-flex flex-row">
         <span className="username">{photo.owner.username}</span>
         <span className="ms-auto me-3 location">{photo.location}</span>
-        <Dialog handleOpen={toggleOpen} open={open} options={dialogOptions} />
+        {!isSpecificPhoto && (
+          <Dialog handleOpen={toggleOpen} open={open} options={dialogOptions} />
+        )}
       </div>
 
       <div className="image-container">

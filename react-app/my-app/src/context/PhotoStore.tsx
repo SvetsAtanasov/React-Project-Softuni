@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
@@ -10,8 +10,6 @@ export type Photo = {
   handleGetCreatePhotoRoute: (dispatchToken: any, token: any) => any;
   handleCreatePhoto: (photo: any) => any;
   handleSendMessageToServer: (messageType: string) => void;
-  handleGetSpecificPhoto: (params: any) => any;
-  photo: any;
   allPhotos: any;
 };
 
@@ -20,8 +18,6 @@ export const PhotoStore = createContext<Photo>({
   handleGetCreatePhotoRoute: (dispatchToken: any) => {},
   handleCreatePhoto: () => {},
   handleSendMessageToServer: (messageType: string) => {},
-  handleGetSpecificPhoto: (params: any) => {},
-  photo: {},
   allPhotos: [],
 });
 
@@ -30,41 +26,6 @@ const { Provider } = PhotoStore;
 export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
-  const [photo, setPhoto] = useState<{
-    _id: string;
-    name: string;
-    image: string;
-    age: number;
-    description: string;
-    location: string;
-    commentList: {
-      userId: string;
-      username: string;
-      comment: string;
-      _id: string;
-    }[];
-    likes: { userId: string; username: string; like: boolean }[];
-    owner: { userId: string; username: string };
-    timestamp: string;
-  }>({
-    _id: "",
-    name: "",
-    image: "",
-    age: 0,
-    description: "",
-    location: "",
-    commentList: [
-      {
-        userId: "",
-        username: "",
-        comment: "",
-        _id: "",
-      },
-    ],
-    likes: [{ userId: "", username: "", like: false }],
-    owner: { userId: "", username: "" },
-    timestamp: "",
-  });
 
   const handleSendMessageToServer = (messageType: string) => {
     client.send(JSON.stringify({ type: messageType }));
@@ -92,17 +53,6 @@ export const PhotoProvider = ({ children }: any) => {
 
       setPhotos((arr: any) => (arr = photos));
     } catch (err: any) {}
-  }, []);
-
-  const handleGetSpecificPhoto = useCallback(async (params: any) => {
-    const res = await requestHandler(
-      "GET",
-      `http://localhost:7777/catalog/${params.photoId}`
-    );
-
-    const photo = await res.json();
-
-    setPhoto(photo);
   }, []);
 
   const handleCreatePhoto = useCallback(
@@ -150,8 +100,6 @@ export const PhotoProvider = ({ children }: any) => {
         handleGetAllPhotos,
         handleGetCreatePhotoRoute,
         handleCreatePhoto,
-        handleGetSpecificPhoto,
-        photo,
         allPhotos,
       }}
     >
