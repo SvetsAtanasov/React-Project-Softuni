@@ -4,10 +4,17 @@
 
   .photo-information-container {
     background-color: white;
+    transition: background-color 0.5s;
 
     .username,
     .location {
       font: normal 600 14px/18px;
+    }
+
+    &.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s;
     }
   }
 
@@ -20,6 +27,13 @@
 
   .footer-container {
     background-color: white;
+    transition: background-color 0.5s;
+
+    &.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s;
+    }
 
     .buttons-container {
       .like-wrapper {

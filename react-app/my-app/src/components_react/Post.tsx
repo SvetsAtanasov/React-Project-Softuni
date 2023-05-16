@@ -8,6 +8,7 @@ import { requestHandler, photoTimestampHandler } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 import Dialog from "./Dialog";
+import { ThemeStore } from "../context/ThemeStore";
 
 export type CustomPostProps = React.PropsWithChildren<{
   photo: {
@@ -34,8 +35,10 @@ export type CustomPostProps = React.PropsWithChildren<{
 const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [commentsExpanded, setCommentsExpanded] = useState<boolean>(false);
-  const { username } = useContext(AuthStore);
   const [isLiked, setIsLiked] = useState<boolean | undefined>(false);
+
+  const { theme } = useContext(ThemeStore);
+  const { username } = useContext(AuthStore);
 
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
@@ -196,7 +199,11 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
       data-id={photo._id}
       className="post ms-auto me-auto pb-3"
     >
-      <div className="p-2 photo-information-container d-flex flex-row">
+      <div
+        className={`p-2 photo-information-container d-flex flex-row ${
+          theme === "light" ? "light" : ""
+        }`}
+      >
         <span className="username">{photo.owner.username}</span>
         <span className="ms-auto me-3 location">{photo.location}</span>
         {!isSpecificPhoto && (
@@ -208,7 +215,9 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
         <img src={photo.image} alt={photo.image} />
       </div>
 
-      <div className="p-2 footer-container">
+      <div
+        className={`p-2 footer-container ${theme === "light" ? "light" : ""}`}
+      >
         <div className="buttons-container">
           <div
             className="like-wrapper d-inline-flex"

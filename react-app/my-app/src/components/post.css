@@ -2,15 +2,25 @@
   width: 100%;
   max-width: 614px; }
   .post .photo-information-container {
-    background-color: white; }
+    background-color: white;
+    transition: background-color 0.5s; }
     .post .photo-information-container .username,
     .post .photo-information-container .location {
       font: normal 600 14px/18px; }
+    .post .photo-information-container.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s; }
   .post .image-container img {
     width: 614px;
     height: auto; }
   .post .footer-container {
-    background-color: white; }
+    background-color: white;
+    transition: background-color 0.5s; }
+    .post .footer-container.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s; }
     .post .footer-container .buttons-container .like-wrapper {
       height: 16px; }
     .post .footer-container .buttons-container .like-button {

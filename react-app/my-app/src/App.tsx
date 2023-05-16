@@ -5,7 +5,6 @@ import Navigation from "./components_react/Nav";
 import HomePage from "./pages/Home";
 import CatalogPage from "./pages/Catalog";
 import ErrorPage from "./pages/404";
-import { Container } from "react-bootstrap";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
 import { AuthProvider } from "./context/AuthStore";
@@ -13,15 +12,13 @@ import PhotoProvider from "./context/PhotoStore";
 import Create from "./pages/Create";
 import PostPage from "./pages/Post";
 import { ThemeProvider } from "./context/ThemeStore";
+import Wrapper from "./components_react/Wrapper";
 
 function App() {
   return (
-    <Container
-      className="mw-100 position-relative m-0 pad"
-      style={{ minHeight: "100vh" }}
-    >
-      <AuthProvider>
-        <ThemeProvider>
+    <ThemeProvider>
+      <Wrapper>
+        <AuthProvider>
           <Navigation />
           <PhotoProvider>
             <Routes>
@@ -34,9 +31,9 @@ function App() {
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </PhotoProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </Container>
+        </AuthProvider>
+      </Wrapper>
+    </ThemeProvider>
   );
 }
 
