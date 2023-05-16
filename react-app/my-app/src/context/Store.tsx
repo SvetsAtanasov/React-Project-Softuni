@@ -14,6 +14,7 @@ export const StoreProvider = ({ children }: any) => {
   const [theme, setTheme] = useState<string>("");
 
   useEffect(() => {
+    console.log("test");
     setTheme("dark");
   }, []);
 

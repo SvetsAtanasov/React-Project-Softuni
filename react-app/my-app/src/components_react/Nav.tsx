@@ -11,8 +11,11 @@ import {
   faUserPlus,
   faBars,
   faUser,
+  faMoon,
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
+import { ThemeStore } from "../context/ThemeStore";
 
 const navNotLogged = [
   {
@@ -62,6 +65,9 @@ const navLogged = [
 
 const Navigation = () => {
   const { isAuth, logout, username } = useContext(AuthStore);
+  const { handleChangeTheme, theme } = useContext(ThemeStore);
+
+  console.log(theme);
 
   const [isOpen, setIsOpen] = useState(false);
   const [navLinks, setNavLinks] = useState<any>([]);
@@ -92,7 +98,12 @@ const Navigation = () => {
   }, []);
 
   return (
-    <nav ref={navRef} className={`main-nav ${isOpen ? "opened" : ""} `}>
+    <nav
+      ref={navRef}
+      className={`main-nav ${theme === "light" ? "light" : ""} ${
+        isOpen ? "opened" : ""
+      } `}
+    >
       <ul className="m-0 px-0 py-3 d-flex flex-column">
         <li>
           {username !== undefined && (
@@ -118,6 +129,7 @@ const Navigation = () => {
               {isOpen ? (
                 <Container className="px-4 m-0 d-flex align-items-center">
                   <FontAwesomeIcon
+                    inverse
                     onClick={navLink.onClick}
                     className="me-3 icon"
                     icon={navLink.icon}
@@ -126,6 +138,7 @@ const Navigation = () => {
                 </Container>
               ) : (
                 <FontAwesomeIcon
+                  style={{ color: "#FFF" }}
                   onClick={navLink.onClick}
                   className="py-3 icon w-100"
                   icon={navLink.icon}
@@ -149,6 +162,14 @@ const Navigation = () => {
             </Container>
           </li>
         )}
+
+        <li className="mt-5  pb-3 toggle">
+          <FontAwesomeIcon
+            onClick={handleChangeTheme}
+            className="py-3 icon w-100"
+            icon={theme === "dark" ? faMoon : faSun}
+          />
+        </li>
       </ul>
     </nav>
   );

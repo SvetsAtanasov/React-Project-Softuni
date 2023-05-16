@@ -3,17 +3,25 @@
   height: 100%;
   display: inline-block;
   background-color: #252526;
-  transition: width 0.5s;
+  transition: width 0.5s, background-color 0.5s;
   border-radius: 0 10px 10px 0;
   position: absolute;
   left: 0; }
+  .main-nav .username {
+    display: none; }
   .main-nav.opened {
     width: 200px;
-    transition: all 0.5s; }
+    transition: width 0.5s, background-color 0.5s; }
     .main-nav.opened .username {
       display: block;
       text-align: center;
       color: white; }
+  .main-nav.light {
+    background-color: #9c9c9c; }
+    .main-nav.light .username {
+      color: #1d1d1d; }
+    .main-nav.light path {
+      color: #1d1d1d; }
   .main-nav ul {
     list-style-type: none;
     overflow: hidden;
@@ -23,7 +31,7 @@
       cursor: pointer; }
       .main-nav ul .toggle svg:hover {
         background: #49494b;
-        transition: background0 0.3s; }
+        transition: background 0.3s; }
     .main-nav ul li .logout {
       cursor: pointer; }
       .main-nav ul li .logout svg {

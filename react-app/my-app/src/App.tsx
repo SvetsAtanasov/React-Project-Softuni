@@ -12,6 +12,7 @@ import { AuthProvider } from "./context/AuthStore";
 import PhotoProvider from "./context/PhotoStore";
 import Create from "./pages/Create";
 import PostPage from "./pages/Post";
+import { ThemeProvider } from "./context/ThemeStore";
 
 function App() {
   return (
@@ -20,18 +21,20 @@ function App() {
       style={{ minHeight: "100vh" }}
     >
       <AuthProvider>
-        <Navigation />
-        <PhotoProvider>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/catalog" element={<CatalogPage />} />
-            <Route path="/catalog/:photoId" element={<PostPage />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </PhotoProvider>
+        <ThemeProvider>
+          <Navigation />
+          <PhotoProvider>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/catalog" element={<CatalogPage />} />
+              <Route path="/catalog/:photoId" element={<PostPage />} />
+              <Route path="/create" element={<Create />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+          </PhotoProvider>
+        </ThemeProvider>
       </AuthProvider>
     </Container>
   );
