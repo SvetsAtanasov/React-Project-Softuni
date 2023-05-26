@@ -1,67 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Container } from "react-bootstrap";
-import {
-  faCamera,
-  faHouse,
-  faPlusCircle,
-  faSignIn,
-  faSignOut,
-  faUserPlus,
-  faBars,
-  faUser,
-  faMoon,
-  faSun,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 import { ThemeStore } from "../context/ThemeStore";
-
-const navNotLogged = [
-  {
-    title: "Home",
-    icon: faHouse,
-    to: "/",
-  },
-  {
-    title: "Catalog",
-    icon: faCamera,
-    to: "/catalog",
-  },
-  {
-    title: "Login",
-    icon: faSignIn,
-    to: "/login",
-  },
-  {
-    title: "Register",
-    icon: faUserPlus,
-    to: "/register",
-  },
-];
-
-const navLogged = [
-  {
-    title: "Profile",
-    icon: faUser,
-    to: "/profile",
-  },
-  {
-    title: "Home",
-    icon: faHouse,
-    to: "/",
-  },
-  {
-    title: "Catalog",
-    icon: faCamera,
-    to: "/catalog",
-  },
-  {
-    title: "Create",
-    icon: faPlusCircle,
-    to: "/create",
-  },
-];
+import PrivateNav from "./PrivateNav";
+import PublicNav from "./PublicNav";
 
 const Navigation = () => {
   const { isAuth, logout, username } = useContext(AuthStore);
@@ -70,7 +13,6 @@ const Navigation = () => {
   console.log(theme);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [navLinks, setNavLinks] = useState<any>([]);
   const navRef = useRef<any>(null);
 
   const toggleOpen = () => {
@@ -80,10 +22,6 @@ const Navigation = () => {
   const handleClose = () => {
     setIsOpen(false);
   };
-
-  useEffect(() => {
-    isAuth ? setNavLinks(navLogged) : setNavLinks(navNotLogged);
-  }, [isAuth]);
 
   useEffect(() => {
     const handleOutsideClick = (e: any) => {
@@ -117,50 +55,15 @@ const Navigation = () => {
             icon={faBars}
           />
         </li>
-        {navLinks.map((navLink: any, idx: number) => (
-          <li key={idx} className={`pb-3  ${isOpen ? "px-2" : "px-1"}`}>
-            <NavLink
-              onClick={handleClose}
-              style={({ isActive }) => {
-                return isActive ? { background: "#49494b" } : {};
-              }}
-              to={navLink.to}
-            >
-              {isOpen ? (
-                <Container className="px-4 m-0 d-flex align-items-center">
-                  <FontAwesomeIcon
-                    inverse
-                    onClick={navLink.onClick}
-                    className="me-3 icon"
-                    icon={navLink.icon}
-                  />
-                  <span>{navLink.title}</span>
-                </Container>
-              ) : (
-                <FontAwesomeIcon
-                  style={{ color: "#FFF" }}
-                  onClick={navLink.onClick}
-                  className="py-3 icon w-100"
-                  icon={navLink.icon}
-                />
-              )}
-            </NavLink>
-          </li>
-        ))}
 
-        {isAuth && (
-          <li className={`${isOpen ? "px-2" : "px-1"}`}>
-            <Container className="logout">
-              <FontAwesomeIcon
-                onClick={() => {
-                  logout();
-                  handleClose();
-                }}
-                className="py-3 icon w-100"
-                icon={faSignOut}
-              />
-            </Container>
-          </li>
+        {isAuth ? (
+          <PrivateNav
+            isOpen={isOpen}
+            handleClose={handleClose}
+            logout={logout}
+          />
+        ) : (
+          <PublicNav isOpen={isOpen} handleClose={handleClose} />
         )}
 
         <li className="mt-5  pb-3 toggle">
