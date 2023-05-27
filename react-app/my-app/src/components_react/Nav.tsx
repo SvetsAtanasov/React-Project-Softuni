@@ -10,8 +10,6 @@ const Navigation = () => {
   const { isAuth, logout, username } = useContext(AuthStore);
   const { handleChangeTheme, theme } = useContext(ThemeStore);
 
-  console.log(theme);
-
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<any>(null);
 

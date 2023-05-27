@@ -51,6 +51,7 @@ export const PhotoProvider = ({ children }: any) => {
       const res = await requestHandler("GET", "http://localhost:7777/catalog");
       const photos = await res.json();
 
+      console.log(photos);
       setPhotos((arr: any) => (arr = photos));
     } catch (err: any) {}
   }, []);
