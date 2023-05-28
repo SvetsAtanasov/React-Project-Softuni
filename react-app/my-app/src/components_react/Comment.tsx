@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Dialog from "./Dialog";
 import { Button } from "react-bootstrap";
+import { AuthStore } from "../context/AuthStore";
 
 export type CustomCommentProps = React.PropsWithChildren<{
   comment: {
@@ -18,6 +19,7 @@ const Comment = ({
   handleDeleteComment,
   handleEditPhotoComment,
 }: CustomCommentProps) => {
+  const { username } = useContext(AuthStore);
   const [open, setOpen] = useState<boolean>(false);
   const [isEdit, setEdit] = useState<boolean>(false);
   const [editCommentValue, setEditCommentValue] = useState<string>(
@@ -86,7 +88,13 @@ const Comment = ({
         <div className="me-3 comment-username">{comment.username}</div>
         <div className="comment">{comment.comment}</div>
         <div className="ms-auto">
-          <Dialog options={dialogOptions} open={open} handleOpen={handleOpen} />
+          {username === comment.username && (
+            <Dialog
+              options={dialogOptions}
+              open={open}
+              handleOpen={handleOpen}
+            />
+          )}
         </div>
       </div>
     </div>
