@@ -1,3 +1,4 @@
+const utils = require("../utils/utils");
 const registerRouter = require("express").Router();
 const loginRouter = require("express").Router();
 const logoutRouter = require("express").Router();
@@ -12,17 +13,7 @@ registerRouter.post("/register", async (req, res) => {
 
     res.status(200).json(token);
   } catch (err) {
-    let error = err.message;
-
-    if (err.errors) {
-      if (err.errors.username) {
-        error = err.errors.username.message;
-      } else if (err.errors.email) {
-        error = err.errors.email.message;
-      } else if (err.errors.password) {
-        error = err.errors.password.message;
-      }
-    }
+    const error = utils.errorTransformer(err);
 
     res.status(400).json(error);
   }

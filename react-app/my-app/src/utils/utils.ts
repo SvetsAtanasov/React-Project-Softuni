@@ -1,3 +1,5 @@
+type Method = "GET" | "POST" | "PUT" | "DELETE";
+
 const generateHeaders = (
   token: any
 ): { "Content-Type": string; authorization?: any } =>
@@ -11,13 +13,13 @@ const generateHeaders = (
 const generateBody = (body: any): any => (body ? JSON.stringify(body) : null);
 
 export const requestHandler = async (
-  method: string,
+  method: Method,
   url: string,
   token: any = null,
   body: any = null
 ) => {
   return await fetch(url, {
-    method: method,
+    method,
     headers: {
       ...generateHeaders(token),
     },

@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 import Dialog from "./Dialog";
 import { ThemeStore } from "../context/ThemeStore";
+import { PhotoStore } from "../context/PhotoStore";
 
 export type CustomPostProps = React.PropsWithChildren<{
   photo: {
@@ -39,22 +40,47 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
 
   const { theme } = useContext(ThemeStore);
   const { username } = useContext(AuthStore);
+  const { handleDeletePhoto } = useContext(PhotoStore);
 
   const diffTimestamp =
     +(new Date().getTime() / 1000).toFixed(0) - +photo.timestamp;
   const [formData, setFormData] = useState<string>("");
   const postRef = useRef<any>(null);
 
-  const dialogOptions = [
-    {
-      title: "Open Post",
-      handler: () => {
-        navigate(`/catalog/${postRef.current.dataset.id}`);
-      },
-    },
-  ];
-
   const navigate = useNavigate();
+
+  const dialogOptions =
+    photo.owner.username === username
+      ? [
+          {
+            title: "Open Post",
+            handler: () => {
+              navigate(`/catalog/${postRef.current.dataset.id}`);
+            },
+          },
+          {
+            title: "Edit Post",
+            handler: () => {
+              console.log("editing");
+            },
+          },
+          {
+            title: "Delete Post",
+            handler: () => {
+              handleDeletePhoto({
+                postId: postRef.current.dataset.id,
+              });
+            },
+          },
+        ]
+      : [
+          {
+            title: "Open Post",
+            handler: () => {
+              navigate(`/catalog/${postRef.current.dataset.id}`);
+            },
+          },
+        ];
 
   const handleExpandComments = () => {
     setCommentsExpanded(!commentsExpanded);
@@ -92,6 +118,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
           window.dispatchEvent(new Event("storage"));
           navigate("/login");
         }
+
         ws("Delete_Post");
         setFormData("");
       }

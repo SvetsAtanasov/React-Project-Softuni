@@ -10,6 +10,7 @@ export type Photo = {
   handleGetCreatePhotoRoute: (dispatchToken: any, token: any) => any;
   handleCreatePhoto: (photo: any) => any;
   handleSendMessageToServer: (messageType: string) => void;
+  handleDeletePhoto: (body: any) => void;
   allPhotos: any;
 };
 
@@ -18,6 +19,7 @@ export const PhotoStore = createContext<Photo>({
   handleGetCreatePhotoRoute: (dispatchToken: any) => {},
   handleCreatePhoto: () => {},
   handleSendMessageToServer: (messageType: string) => {},
+  handleDeletePhoto: (body: any) => {},
   allPhotos: [],
 });
 
@@ -46,24 +48,47 @@ export const PhotoProvider = ({ children }: any) => {
     };
   }, []);
 
+  const handleDeletePhoto = useCallback(
+    async (body: any) => {
+      const token = JSON.parse(localStorage.getItem("token")!);
+
+      try {
+        const res = await requestHandler(
+          "DELETE",
+          `http://localhost:7777/catalog/delete`,
+          token,
+          body
+        );
+
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          window.dispatchEvent(new Event("storage"));
+          navigate("/login");
+        }
+
+        handleSendMessageToServer("Delete_Post");
+      } catch (err: any) {}
+    },
+    [navigate]
+  );
+
   const handleGetAllPhotos = useCallback(async () => {
     try {
       const res = await requestHandler("GET", "http://localhost:7777/catalog");
       const photos = await res.json();
 
-      console.log(photos);
       setPhotos((arr: any) => (arr = photos));
     } catch (err: any) {}
   }, []);
 
   const handleCreatePhoto = useCallback(
     async (photo: any) => {
-      const temptoken = JSON.parse(localStorage.getItem("token")!);
+      const token = JSON.parse(localStorage.getItem("token")!);
 
       const res = await requestHandler(
         "POST",
         "http://localhost:7777/create",
-        temptoken,
+        token,
         photo
       );
 
@@ -97,6 +122,7 @@ export const PhotoProvider = ({ children }: any) => {
   return (
     <Provider
       value={{
+        handleDeletePhoto,
         handleSendMessageToServer,
         handleGetAllPhotos,
         handleGetCreatePhotoRoute,

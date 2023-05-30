@@ -3,7 +3,6 @@ const { SECRET } = require("../config/config");
 const bcrypt = require("bcrypt");
 const jsonWebToken = require("jsonwebtoken");
 const util = require("util");
-const { decode } = require("punycode");
 
 const jwt = {
   sign: util.promisify(jsonWebToken.sign),
@@ -58,6 +57,7 @@ async function login(username, password) {
 }
 
 async function authMiddleware(req, res, next) {
+  //Rework authMiddleware
   if (req.headers.authorization) {
     const token = JSON.parse(req.headers.authorization).token;
 

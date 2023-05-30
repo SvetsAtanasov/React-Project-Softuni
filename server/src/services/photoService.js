@@ -51,6 +51,10 @@ function commentPhoto(id) {
   return Photo.findById(id).populate("commentList");
 }
 
+function deletePhoto(id) {
+  return Photo.findByIdAndDelete(id);
+}
+
 function updatePhoto(id, photo) {
   return Photo.findByIdAndUpdate(id, { ...photo });
 }
@@ -69,4 +73,5 @@ module.exports = {
   getAllUserCreatedPhotos,
   likePhoto,
   editPhotoComment,
+  deletePhoto,
 };
