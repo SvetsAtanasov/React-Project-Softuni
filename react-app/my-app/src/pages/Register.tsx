@@ -1,18 +1,7 @@
-import Form from "../components_react/Form";
-import { AuthStore } from "../context/AuthStore";
-import { useContext } from "react";
+import RegisterForm from "../components/widgets/RegisterForm";
 
 const RegisterPage = () => {
-  const { register, payload } = useContext(AuthStore);
-
-  return (
-    <Form
-      register={register}
-      variant={"register"}
-      title="Register"
-      payload={payload}
-    />
-  );
+  return <RegisterForm />;
 };
 
 export default RegisterPage;

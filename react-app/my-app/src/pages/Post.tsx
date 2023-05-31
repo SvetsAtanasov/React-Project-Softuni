@@ -3,7 +3,7 @@ import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 
-const Post = lazy(() => import("../components_react/Post"));
+const Post = lazy(() => import("../components/Post"));
 
 const PostPage = () => {
   const [photo, setPhoto] = useState<{

@@ -1,8 +1,0 @@
-.wrapper {
-  min-height: 100vh;
-  padding: 0 62px;
-  background-color: #3e3e42;
-  transition: background-color 0.5s; }
-  .wrapper.light {
-    background-color: white;
-    transition: background-color 0.5s; }

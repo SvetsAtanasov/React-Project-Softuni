@@ -1,8 +1,8 @@
-import Navigation from "../components_react/Nav";
+import Navigation from "../components/Nav";
 import { AuthProvider } from "../context/AuthStore";
 import PhotoProvider from "../context/PhotoStore";
 import { ThemeProvider } from "../context/ThemeStore";
-import Wrapper from "../components_react/Wrapper";
+import Wrapper from "../components/Wrapper";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/Home";
 import CatalogPage from "../pages/Catalog";

@@ -1,11 +1,7 @@
-import Form from "../components_react/Form";
-import { AuthStore } from "../context/AuthStore";
-import { useContext } from "react";
+import LoginForm from "../components/widgets/LoginForm";
 
 const LoginPage = () => {
-  const { login, payload } = useContext(AuthStore);
-
-  return <Form login={login} title={"Login"} payload={payload} />;
+  return <LoginForm />;
 };
 
 export default LoginPage;

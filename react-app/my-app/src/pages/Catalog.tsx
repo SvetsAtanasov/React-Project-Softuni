@@ -4,7 +4,7 @@ import { PhotoStore } from "../context/PhotoStore";
 import { lazy } from "react";
 import { Container } from "react-bootstrap";
 
-const Catalog = lazy(() => import("../components_react/Catalog"));
+const Catalog = lazy(() => import("../components/Catalog"));
 
 const CatalogPage = () => {
   const { allPhotos, handleGetAllPhotos, handleSendMessageToServer } =

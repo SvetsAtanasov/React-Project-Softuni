@@ -1,5 +1,6 @@
 const createRouter = require("express").Router();
 const { createPhoto } = require("../services/photoService");
+const utils = require("../utils/utils");
 
 createRouter.post("/create", async (req, res) => {
   const { name, age, description, location, image } = req.body;
