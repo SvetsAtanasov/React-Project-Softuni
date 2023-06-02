@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import Form from "../Form";
 import { Button, Container } from "react-bootstrap";
 import { AuthStore } from "../../context/AuthStore";
+import { NavLink } from "react-router-dom";
 
 const RegisterForm = () => {
   const { register, payload } = useContext(AuthStore);
@@ -69,6 +70,10 @@ const RegisterForm = () => {
           onChange={handleChange}
           type="password"
         />
+      </Container>
+
+      <Container className="mt-auto d-flex justify-content-center">
+        <NavLink to={"/login"}>Already have an account?</NavLink>
       </Container>
 
       <Button className="mt-auto mb-0" type="submit">
