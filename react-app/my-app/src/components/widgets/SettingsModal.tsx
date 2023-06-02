@@ -4,6 +4,7 @@ import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { ThemeStore } from "../../context/ThemeStore";
 import { useContext, useState } from "react";
 import { AuthStore } from "../../context/AuthStore";
+import { Form } from "react-bootstrap";
 
 type CustomSettingsModalProps = React.PropsWithChildren<{
   handleCloseModal: () => void;
@@ -16,6 +17,13 @@ const SettingsModal = ({
 }: ModalProps & CustomSettingsModalProps) => {
   const { handleChangeTheme, theme } = useContext(ThemeStore);
   const { isAuth } = useContext(AuthStore);
+
+  const [checked, setChecked] = useState(false);
+
+  const handleSetChecked = () => {
+    handleChangeTheme();
+    setChecked(!checked);
+  };
 
   return (
     <Modal onHide={handleCloseModal} show={show}>
@@ -32,12 +40,16 @@ const SettingsModal = ({
         <div className="d-flex flex-column align-items-start">
           <span>Choose your theme:</span>
 
-          <div className="d-flex align-items-center justify-content center">
-            <FontAwesomeIcon
-              onClick={handleChangeTheme}
-              icon={theme === "dark" ? faMoon : faSun}
+          <div className="w-100 d-flex align-items-center justify-content center">
+            <FontAwesomeIcon icon={theme === "dark" ? faMoon : faSun} />
+            <span className="ms-2">{theme === "dark" ? "Dark" : "Light"}</span>
+
+            <Form.Check
+              className="ms-auto"
+              checked={checked}
+              type="switch"
+              onChange={handleSetChecked}
             />
-            <span className="ms-2">{theme}</span>
           </div>
         </div>
       </Modal.Body>
