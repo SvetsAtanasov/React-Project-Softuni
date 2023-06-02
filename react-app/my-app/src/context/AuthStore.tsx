@@ -8,6 +8,7 @@ import {
 import { reducer } from "../actions/authActions";
 import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
+import { toast } from "react-toastify";
 
 export type Auth = {
   payload: { error: any; success: any };
@@ -99,15 +100,12 @@ export const AuthProvider = ({ children }: any) => {
         type: "set_error",
         nextError: err.message,
       });
-
-      setTimeout(() => {
-        dispatchPayload({
-          type: "set_error",
-          nextError: undefined,
-        });
-      }, 0.1);
     }
   };
+
+  useEffect(() => {
+    toast.error(payload.error);
+  }, [payload]);
 
   const register = useCallback(
     async (
@@ -137,13 +135,6 @@ export const AuthProvider = ({ children }: any) => {
           type: "set_error",
           nextError: err.message,
         });
-
-        setTimeout(() => {
-          dispatchPayload({
-            type: "set_error",
-            nextError: undefined,
-          });
-        }, 0.1);
       }
     },
     [navigate]

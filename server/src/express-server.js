@@ -88,8 +88,6 @@ wss.on("connection", (ws, req) => {
           client.send(`${JSON.stringify(posts)}\n`)
         );
       } catch (err) {}
-    } else if (parsedMessage.type === "Connection_Established") {
-      ws.send("Handshake");
     }
   });
 

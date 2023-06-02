@@ -17,10 +17,6 @@ const Form = ({ handleSubmitForm, body, title, payload }: CustomFormProps) => {
     handleSubmitForm();
   };
 
-  useEffect(() => {
-    toast.error(payload.error);
-  }, [payload.error]);
-
   return (
     <>
       <Toast />

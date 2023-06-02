@@ -1,16 +1,18 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCog } from "@fortawesome/free-solid-svg-icons";
 import { AuthStore } from "../context/AuthStore";
 import { ThemeStore } from "../context/ThemeStore";
 import PrivateNav from "./PrivateNav";
 import PublicNav from "./PublicNav";
+import SettingsModal from "./widgets/SettingsModal";
 
 const Navigation = () => {
   const { isAuth, logout, username } = useContext(AuthStore);
-  const { handleChangeTheme, theme } = useContext(ThemeStore);
+  const { theme } = useContext(ThemeStore);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [openSettingsModal, setOpenSettingsModal] = useState(false);
   const navRef = useRef<any>(null);
 
   const toggleOpen = () => {
@@ -19,6 +21,14 @@ const Navigation = () => {
 
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const handleOpenSettingsModal = () => {
+    setOpenSettingsModal(true);
+  };
+
+  const handleCloseSettingsModal = () => {
+    setOpenSettingsModal(false);
   };
 
   useEffect(() => {
@@ -40,6 +50,11 @@ const Navigation = () => {
         isOpen ? "opened" : ""
       } `}
     >
+      <SettingsModal
+        handleCloseModal={handleCloseSettingsModal}
+        show={openSettingsModal}
+      />
+
       <ul className="m-0 px-0 py-3 d-flex flex-column">
         <li>
           {username !== undefined && (
@@ -66,9 +81,9 @@ const Navigation = () => {
 
         <li className="mt-5  pb-3 toggle">
           <FontAwesomeIcon
-            onClick={handleChangeTheme}
+            onClick={handleOpenSettingsModal}
             className="py-3 icon w-100"
-            icon={theme === "dark" ? faMoon : faSun}
+            icon={faCog}
           />
         </li>
       </ul>

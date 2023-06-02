@@ -1,4 +1,4 @@
-import PrivateProtected from "./PrivateProtecte";
+import PrivateProtected from "./PrivateProtected";
 import PublicProtected from "./PublicProtected";
 
 export type ProtectedType = "public" | "private";
