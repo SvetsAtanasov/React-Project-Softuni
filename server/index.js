@@ -69,7 +69,7 @@ const wss = new WebSocketServer({
 
 let connectedClients = [];
 
-wss.wss.on("connection", (ws, req) => {
+wss.on("connection", (ws, req) => {
   ws.id = new Date();
 
   connectedClients.push(ws);
