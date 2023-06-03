@@ -9,7 +9,7 @@ const { WebSocketServer } = require("ws");
 const { createServer } = require("http");
 
 //Database
-const { initDatabase } = require("./utils/db");
+const { initDatabase } = require("./src/utils/db");
 
 //Middleware
 const cookieParser = require("cookie-parser");
@@ -20,13 +20,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //controllers
-const { homeRouter } = require("./controllers/homeController");
-const { createRouter } = require("./controllers/createController");
+const { homeRouter } = require("./src/controllers/homeController");
+const { createRouter } = require("./src/controllers/createController");
 const {
   registerRouter,
   loginRouter,
   logoutRouter,
-} = require("./controllers/authController");
+} = require("./src/controllers/authController");
 const {
   catalogRouter,
   detailsPhotoRouter,
@@ -34,10 +34,14 @@ const {
   commentPhotoRouter,
   editPhotoRouter,
   likePhotoRouter,
-} = require("./controllers/catalogController");
-const { profileController } = require("./controllers/profileController");
-const { authMiddleware, isGuest, isAuth } = require("./services/authServices");
-const { getAllPhotos } = require("./services/photoService");
+} = require("./src/controllers/catalogController");
+const { profileController } = require("./src/controllers/profileController");
+const {
+  authMiddleware,
+  isGuest,
+  isAuth,
+} = require("./src/services/authServices");
+const { getAllPhotos } = require("./src/services/photoService");
 const { parse } = require("path");
 app.use(authMiddleware);
 app.use("/", homeRouter);
