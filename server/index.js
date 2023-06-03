@@ -64,18 +64,15 @@ const server = createServer(app);
 
 const wss = new WebSocketServer({
   server: server,
-  path: "/catalog",
 });
 
 let connectedClients = [];
 
 wss.on("connection", (ws, req) => {
-  ws.id = new Date();
+  ws.id = req.headers["sec-websocket-key"];
 
   connectedClients.push(ws);
   console.log("WebSocket connection established");
-
-  ws.on("open", heartbeat);
 
   ws.on("message", async (message) => {
     const parsedMessage = JSON.parse(message);
@@ -110,10 +107,3 @@ initDatabase().then(() => {
     console.log(`Server running on port: ${7777}`);
   });
 });
-
-function heartbeat() {
-  if (!socket) return;
-  if (socket.readyState !== 1) return;
-  socket.send("heartbeat");
-  setTimeout(heartbeat, 500);
-}
