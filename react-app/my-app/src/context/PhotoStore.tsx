@@ -35,7 +35,13 @@ export const PhotoProvider = ({ children }: any) => {
 
   useEffect(() => {
     client.onopen = () => {
-      client.send(JSON.stringify({ type: "Connection_Established" }));
+      let t = setInterval(function () {
+        if (client.readyState !== 1) {
+          clearInterval(t);
+          return;
+        }
+        client.send('{type:"ping"}');
+      }, 5000);
     };
 
     client.onmessage = (message: any) => {
