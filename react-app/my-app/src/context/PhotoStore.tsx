@@ -48,10 +48,6 @@ export const PhotoProvider = ({ children }: any) => {
       const photos = JSON.parse(message.data);
       setPhotos(photos);
     };
-
-    return () => {
-      client.close();
-    };
   }, []);
 
   const handleDeletePhoto = useCallback(
