@@ -11,6 +11,8 @@ registerRouter.post("/register", async (req, res) => {
     await registerUser(username, email, password, repeatPassword);
     const token = await login(username, password);
 
+    console.log(token);
+
     res.status(200).json(token);
   } catch (err) {
     const error = utils.errorTransformer(err);

@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }: any) => {
     try {
       const res = await requestHandler(
         "POST",
-        "http://localhost:7777/login",
+        "https://instagram-clone-api-nlh3.onrender.com/login",
         null,
         { username, password }
       );
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }: any) => {
       try {
         const res = await requestHandler(
           "POST",
-          "http://localhost:7777/register",
+          "https://instagram-clone-api-nlh3.onrender.com/register",
           null,
           { username, email, password, repeatPassword }
         );
@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }: any) => {
           throw new Error(data);
         }
 
-        localStorage.setItem("token", data);
+        localStorage.setItem("token", JSON.stringify(data));
         navigate("/");
       } catch (err: any) {
         dispatchPayload({
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }: any) => {
 
     const res = await requestHandler(
       "POST",
-      "http://localhost:7777/logout",
+      "https://instagram-clone-api-nlh3.onrender.com/logout",
       tempToken
     );
 

@@ -46,7 +46,7 @@ const PostPage = () => {
   const handleGetSpecificPhoto = useCallback(async (params: any) => {
     const res = await requestHandler(
       "GET",
-      `http://localhost:7777/catalog/${params.photoId}`
+      `https://instagram-clone-api-nlh3.onrender.com/catalog/${params.photoId}`
     );
 
     const photo = await res.json();

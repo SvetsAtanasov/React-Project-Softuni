@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket("ws://localhost:7777/catalog");
+const client = new W3CWebSocket(
+  "ws://instagram-clone-api-nlh3.onrender.com7/catalog"
+);
 
 export type Photo = {
   handleGetAllPhotos: () => any;
@@ -55,7 +57,7 @@ export const PhotoProvider = ({ children }: any) => {
       try {
         const res = await requestHandler(
           "DELETE",
-          `http://localhost:7777/catalog/delete`,
+          `https://instagram-clone-api-nlh3.onrender.com/catalog/delete`,
           token,
           body
         );
@@ -74,7 +76,10 @@ export const PhotoProvider = ({ children }: any) => {
 
   const handleGetAllPhotos = useCallback(async () => {
     try {
-      const res = await requestHandler("GET", "http://localhost:7777/catalog");
+      const res = await requestHandler(
+        "GET",
+        "https://instagram-clone-api-nlh3.onrender.com/catalog"
+      );
       const photos = await res.json();
 
       setPhotos((arr: any) => (arr = photos));
@@ -87,7 +92,7 @@ export const PhotoProvider = ({ children }: any) => {
 
       const res = await requestHandler(
         "POST",
-        "http://localhost:7777/create",
+        "https://instagram-clone-api-nlh3.onrender.com/create",
         token,
         photo
       );
@@ -108,7 +113,7 @@ export const PhotoProvider = ({ children }: any) => {
 
     const res = await requestHandler(
       "GET",
-      "http://localhost:7777/create",
+      "https://instagram-clone-api-nlh3.onrender.com/create",
       temptoken
     );
 

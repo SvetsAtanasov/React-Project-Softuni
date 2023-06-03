@@ -19,7 +19,7 @@ export const HomeProvider = ({ children }: any) => {
     if (tempToken !== null) {
       const res = await requestHandler(
         "GET",
-        "http://localhost:7777/",
+        "https://instagram-clone-api-nlh3.onrender.com",
         tempToken
       );
 
