@@ -4,7 +4,7 @@ import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const client = new W3CWebSocket(
-  "ws://instagram-clone-api-nlh3.onrender.com7/catalog"
+  "wss://instagram-clone-api-nlh3.onrender.com7/catalog"
 );
 
 export type Photo = {
