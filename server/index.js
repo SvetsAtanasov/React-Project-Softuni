@@ -69,7 +69,7 @@ initDatabase().then(() => {
 });
 
 const wss = new WebSocketServer({
-  port: 3333,
+  server: server,
 });
 
 let connectedClients = [];
