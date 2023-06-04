@@ -70,12 +70,12 @@ initDatabase().then(() => {
 
 const wss = new WebSocketServer({
   server: server,
-  path: "/catalog",
 });
 
 let connectedClients = [];
 
 wss.on("connection", (ws, req) => {
+  console.log(ws.id);
   ws.id = req.headers["sec-websocket-key"];
   connectedClients.push(ws);
 

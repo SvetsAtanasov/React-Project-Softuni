@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket(`wss://${window.location.host}/catalog`);
+const client = new W3CWebSocket(`wss://${window.location.host}`);
 
 export type Photo = {
   handleGetAllPhotos: () => any;
