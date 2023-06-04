@@ -70,6 +70,7 @@ initDatabase().then(() => {
 
 const wss = new WebSocketServer({
   server: server,
+  path: "/catalog",
 });
 
 let connectedClients = [];
