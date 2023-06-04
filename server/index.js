@@ -1,3 +1,5 @@
+require("dotenv").config({ path: `${__dirname}/.env` });
+
 //Server
 const express = require("express");
 const app = express();
@@ -62,7 +64,7 @@ app.get("/*", (req, res) => {
 
 const server = createServer(app);
 
-initDatabase().then(() => {
+initDatabase(process.env.DB_URL).then(() => {
   server.listen(7777, () => {
     console.log(`Server running on port: ${7777}`);
   });
