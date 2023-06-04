@@ -69,16 +69,17 @@ initDatabase().then(() => {
 });
 
 const wss = new WebSocketServer({
-  port: 10000,
+  server: server,
 });
 
 let connectedClients = [];
 
 wss.on("connection", (ws, req) => {
-  ws.id = req.headers["sec-websocket-key"];
+  console.log("WebSocket connection established");
+
+  // ws.id = req.headers["sec-websocket-key"];
 
   connectedClients.push(ws);
-  console.log("WebSocket connection established");
 
   ws.on("message", async (message) => {
     const parsedMessage = JSON.parse(message);
