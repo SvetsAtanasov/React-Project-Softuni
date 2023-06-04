@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { DB_URL } = require("../config/config");
+require("dotenv").config();
 
 async function initDatabase() {
   mongoose.set("strictQuery", false);
 
-  await mongoose.connect(DB_URL);
+  await mongoose.connect(process.env.DATABASE_URL);
 }
 
 module.exports = { initDatabase };
