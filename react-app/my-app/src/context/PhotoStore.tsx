@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { requestHandler } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket(
-  "wss://instagram-clone-api-nlh3.onrender.com7/catalog"
-);
+const client = new W3CWebSocket(`wss://${window.location.host}/catalog`);
 
 export type Photo = {
   handleGetAllPhotos: () => any;
