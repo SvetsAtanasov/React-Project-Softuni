@@ -75,11 +75,10 @@ const wss = new WebSocketServer({
 let connectedClients = [];
 
 wss.on("connection", (ws, req) => {
-  console.log("WebSocket connection established");
-
-  // ws.id = req.headers["sec-websocket-key"];
-
+  ws.id = req.headers["sec-websocket-key"];
   connectedClients.push(ws);
+
+  connectedClients.forEach((client) => client.send(`Server\n`));
 
   ws.on("message", async (message) => {
     const parsedMessage = JSON.parse(message);

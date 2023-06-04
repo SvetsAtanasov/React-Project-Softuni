@@ -35,11 +35,11 @@ export const PhotoProvider = ({ children }: any) => {
 
   useEffect(() => {
     client.onopen = () => {
-      client.send("test");
-      console.log("test");
+      client.send("Client");
     };
 
     client.onmessage = (message: any) => {
+      console.log(message);
       const photos = JSON.parse(message.data);
       setPhotos(photos);
     };
