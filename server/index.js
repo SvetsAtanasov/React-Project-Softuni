@@ -62,9 +62,15 @@ app.get("/*", (req, res) => {
 
 const server = createServer(app);
 
+initDatabase().then(() => {
+  server.listen(7777, () => {
+    console.log(`Server running on port: ${7777}`);
+  });
+});
+
 const wss = new WebSocketServer({
   server: server,
-  path: "/catalog",
+  port: 7777,
 });
 
 let connectedClients = [];
@@ -100,11 +106,5 @@ wss.on("connection", (ws, req) => {
     connectedClients = connectedClients.filter(
       (x) => x.id !== req.headers["sec-websocket-key"]
     );
-  });
-});
-
-initDatabase().then(() => {
-  server.listen(7777, () => {
-    console.log(`Server running on port: ${7777}`);
   });
 });
