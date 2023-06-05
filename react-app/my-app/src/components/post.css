@@ -1,0 +1,42 @@
+.post {
+  width: 100%;
+  max-width: 614px; }
+  .post .photo-information-container {
+    background-color: white;
+    transition: background-color 0.5s; }
+    .post .photo-information-container .username,
+    .post .photo-information-container .location {
+      font: normal 600 14px/18px; }
+    .post .photo-information-container.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s; }
+  .post .image-container img {
+    width: 100%;
+    height: auto; }
+  .post .footer-container {
+    background-color: white;
+    transition: background-color 0.5s; }
+    .post .footer-container.light {
+      color: white;
+      background-color: #3e3e42;
+      transition: background-color 0.5s; }
+    .post .footer-container .buttons-container .like-wrapper {
+      height: 16px; }
+    .post .footer-container .buttons-container .like-button {
+      cursor: pointer; }
+    .post .footer-container .comments-container .collapse,
+    .post .footer-container .comments-container .expand {
+      cursor: pointer;
+      font: normal 400 12px/18px "Open sans"; }
+    .post .footer-container .comment-form form input {
+      background-color: #212529;
+      color: white;
+      width: 50%;
+      border-radius: 5px;
+      border: none;
+      padding: 5px;
+      transition: width 0.4s; }
+      .post .footer-container .comment-form form input:focus {
+        width: 75%;
+        transition: all 0.4s; }

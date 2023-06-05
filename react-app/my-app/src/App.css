@@ -82,7 +82,7 @@
       background-color: #3e3e42;
       transition: background-color 0.5s; }
   .post .image-container img {
-    width: 614px;
+    width: 100%;
     height: auto; }
   .post .footer-container {
     background-color: white;
