@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState, useCallback } from "react";
 import { Spinner } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { requestHandler } from "../utils/utils";
+import { request } from "../utils/utils";
 
 const Post = lazy(() => import("../components/Post"));
 
@@ -44,8 +44,7 @@ const PostPage = () => {
   const params = useParams();
 
   const handleGetSpecificPhoto = useCallback(async (params: any) => {
-    const res = await requestHandler(
-      "GET",
+    const res = await request.get(
       `https://instagram-clone-api-nlh3.onrender.com/catalog/${params.photoId}`
     );
 

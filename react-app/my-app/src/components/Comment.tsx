@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Dialog from "./Dialog";
 import { Button } from "react-bootstrap";
 import { AuthStore } from "../context/AuthStore";
@@ -25,6 +25,7 @@ const Comment = ({
   const [editCommentValue, setEditCommentValue] = useState<string>(
     comment.comment
   );
+
   const commentRef = useRef<any>(null);
 
   const handleOpen = (open: boolean) => {
@@ -45,7 +46,9 @@ const Comment = ({
   const dialogOptions = [
     {
       title: "Delete",
-      handler: () => handleDeleteComment(commentRef),
+      handler: () => {
+        handleDeleteComment(commentRef);
+      },
     },
     {
       title: "Edit",
@@ -65,7 +68,7 @@ const Comment = ({
         <div className="comment-form">
           <form className="d-flex">
             <input
-              onChange={handleCommentValue}
+              onChange={(e: any) => handleCommentValue(e)}
               value={editCommentValue}
               name="comment"
               type="text"
@@ -73,7 +76,6 @@ const Comment = ({
 
             <Button
               className="ms-auto"
-              disabled={!editCommentValue.trim()}
               onClick={handleSubmitForm}
               variant="dark"
               type="submit"

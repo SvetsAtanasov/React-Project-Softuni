@@ -7,7 +7,7 @@ import {
 } from "react";
 import { reducer } from "../actions/authActions";
 import { useNavigate } from "react-router-dom";
-import { requestHandler } from "../utils/utils";
+import { request } from "../utils/utils";
 import { toast } from "react-toastify";
 
 export type Auth = {
@@ -49,6 +49,8 @@ export const AuthProvider = ({ children }: any) => {
     success: undefined,
   });
 
+  console.log(username);
+
   const [isAuth, setIsAuth] = useState<boolean>(false);
 
   const checkIsAuth = useCallback(() => {
@@ -79,8 +81,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const res = await requestHandler(
-        "POST",
+      const res = await request.post(
         "https://instagram-clone-api-nlh3.onrender.com/login",
         null,
         { username, password }
@@ -115,8 +116,7 @@ export const AuthProvider = ({ children }: any) => {
       repeatPassword: string
     ) => {
       try {
-        const res = await requestHandler(
-          "POST",
+        const res = await request.post(
           "https://instagram-clone-api-nlh3.onrender.com/register",
           null,
           { username, email, password, repeatPassword }
@@ -128,6 +128,7 @@ export const AuthProvider = ({ children }: any) => {
           throw new Error(data);
         }
 
+        setUsername(data.username);
         localStorage.setItem("token", JSON.stringify(data));
         navigate("/");
       } catch (err: any) {
@@ -141,12 +142,11 @@ export const AuthProvider = ({ children }: any) => {
   );
 
   const logout = useCallback(async () => {
-    const tempToken = JSON.parse(localStorage.getItem("token")!);
+    const token = JSON.parse(localStorage.getItem("token")!);
 
-    const res = await requestHandler(
-      "POST",
+    const res = await request.post(
       "https://instagram-clone-api-nlh3.onrender.com/logout",
-      tempToken
+      token
     );
 
     if (res.status === 401) {

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext } from "react";
 import { AuthStore } from "./AuthStore";
-import { requestHandler } from "./../utils/utils";
+import { request } from "./../utils/utils";
 
 export type Home = {
   handleHomeRequest: () => void;
@@ -17,8 +17,7 @@ export const HomeProvider = ({ children }: any) => {
     const tempToken = JSON.parse(localStorage.getItem("token")!);
 
     if (tempToken !== null) {
-      const res = await requestHandler(
-        "GET",
+      const res = await request.get(
         "https://instagram-clone-api-nlh3.onrender.com",
         tempToken
       );

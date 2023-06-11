@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { AuthStore } from "../context/AuthStore";
-import { requestHandler, photoTimestampHandler } from "../utils/utils";
+import { request, photoTimestampHandler } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 import Dialog from "./Dialog";
@@ -103,8 +103,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const res = await requestHandler(
-          "DELETE",
+        const res = await request.delete(
           `https://instagram-clone-api-nlh3.onrender.com/catalog/${ref.current.dataset.id}/delete`,
           JSON.parse(token),
           {
@@ -131,8 +130,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const res = await requestHandler(
-          "PUT",
+        const res = await request.put(
           `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/edit`,
           JSON.parse(token),
           {
@@ -160,8 +158,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
       const token = localStorage.getItem("token");
 
       if (token) {
-        const res = await requestHandler(
-          "PUT",
+        const res = await request.put(
           `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/comment`,
           JSON.parse(token),
           {
@@ -189,8 +186,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      const res = await requestHandler(
-        "PUT",
+      const res = await request.put(
         `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/like`,
         JSON.parse(token),
         {
