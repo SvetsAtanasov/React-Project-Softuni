@@ -58,7 +58,7 @@ export const PhotoProvider = ({ children }: any) => {
 
       try {
         const res = await request.delete(
-          `https://instagram-clone-api-nlh3.onrender.com/catalog/delete`,
+          `http://localhost:7777/catalog/delete`,
           token,
           body
         );
@@ -77,9 +77,7 @@ export const PhotoProvider = ({ children }: any) => {
 
   const handleGetAllPhotos = useCallback(async () => {
     try {
-      const res = await request.get(
-        "https://instagram-clone-api-nlh3.onrender.com/catalog"
-      );
+      const res = await request.get("http://localhost:7777/catalog");
       const photos = await res.json();
 
       setPhotos((arr: any) => (arr = photos));
@@ -91,7 +89,7 @@ export const PhotoProvider = ({ children }: any) => {
       const token = JSON.parse(localStorage.getItem("token")!);
 
       const res = await request.post(
-        "https://instagram-clone-api-nlh3.onrender.com/create",
+        "http://localhost:7777/create",
         token,
         photo
       );
@@ -110,10 +108,7 @@ export const PhotoProvider = ({ children }: any) => {
   const handleGetCreatePhotoRoute = async (dispatchToken: any, token: any) => {
     const temptoken = JSON.parse(localStorage.getItem("token")!);
 
-    const res = await request.get(
-      "https://instagram-clone-api-nlh3.onrender.com/create",
-      temptoken
-    );
+    const res = await request.get("http://localhost:7777/create", temptoken);
 
     if (res.status === 401) {
       localStorage.removeItem("token");

@@ -81,11 +81,10 @@ export const AuthProvider = ({ children }: any) => {
 
   const login = async (username: string, password: string) => {
     try {
-      const res = await request.post(
-        "https://instagram-clone-api-nlh3.onrender.com/login",
-        null,
-        { username, password }
-      );
+      const res = await request.post("http://localhost:7777/login", null, {
+        username,
+        password,
+      });
 
       const data = await res.json();
 
@@ -116,11 +115,12 @@ export const AuthProvider = ({ children }: any) => {
       repeatPassword: string
     ) => {
       try {
-        const res = await request.post(
-          "https://instagram-clone-api-nlh3.onrender.com/register",
-          null,
-          { username, email, password, repeatPassword }
-        );
+        const res = await request.post("http://localhost:7777/register", null, {
+          username,
+          email,
+          password,
+          repeatPassword,
+        });
 
         const data = await res.json();
 
@@ -144,10 +144,7 @@ export const AuthProvider = ({ children }: any) => {
   const logout = useCallback(async () => {
     const token = JSON.parse(localStorage.getItem("token")!);
 
-    const res = await request.post(
-      "https://instagram-clone-api-nlh3.onrender.com/logout",
-      token
-    );
+    const res = await request.post("http://localhost:7777/logout", token);
 
     if (res.status === 401) {
       navigate("/");

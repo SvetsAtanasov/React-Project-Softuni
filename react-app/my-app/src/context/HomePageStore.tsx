@@ -17,10 +17,7 @@ export const HomeProvider = ({ children }: any) => {
     const tempToken = JSON.parse(localStorage.getItem("token")!);
 
     if (tempToken !== null) {
-      const res = await request.get(
-        "https://instagram-clone-api-nlh3.onrender.com",
-        tempToken
-      );
+      const res = await request.get("http://localhost:7777", tempToken);
 
       if (res.status === 401) {
         localStorage.removeItem("token");
