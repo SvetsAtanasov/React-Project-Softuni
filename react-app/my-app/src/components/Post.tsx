@@ -30,7 +30,7 @@ export type CustomPostProps = React.PropsWithChildren<{
     timestamp: string;
   };
   isSpecificPhoto?: boolean;
-  ws: (messageType: string) => void;
+  ws: (messageType: string, data: any) => void;
 }>;
 
 const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
@@ -104,7 +104,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
 
       if (token) {
         const res = await request.delete(
-          `https://instagram-clone-api-nlh3.onrender.com/catalog/${ref.current.dataset.id}/delete`,
+          `http://localhost:7777/catalog/${ref.current.dataset.id}/delete`,
           JSON.parse(token),
           {
             postId: postRef.current.dataset.id,
@@ -118,7 +118,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
           navigate("/login");
         }
 
-        ws("Delete_Post");
+        ws("Delete_Post", {});
         setFormData("");
       }
     },
@@ -131,7 +131,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
 
       if (token) {
         const res = await request.put(
-          `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/edit`,
+          `http://localhost:7777/catalog/${postRef.current.dataset.id}/edit`,
           JSON.parse(token),
           {
             commentId: ref.current.dataset.id,
@@ -144,7 +144,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
           window.dispatchEvent(new Event("storage"));
           navigate("/login");
         }
-        ws("Delete_Post");
+        ws("Delete_Post", {});
         setFormData("");
       }
     },
@@ -159,7 +159,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
 
       if (token) {
         const res = await request.put(
-          `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/comment`,
+          `http://localhost:7777/catalog/${postRef.current.dataset.id}/comment`,
           JSON.parse(token),
           {
             id: postRef.current.dataset.id,
@@ -173,7 +173,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
           navigate("/login");
         }
 
-        ws("Comment_Post");
+        ws("Comment_Post", {});
         setFormData("");
       } else {
         navigate("/login");
@@ -187,7 +187,7 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
 
     if (token) {
       const res = await request.put(
-        `https://instagram-clone-api-nlh3.onrender.com/catalog/${postRef.current.dataset.id}/like`,
+        `http://localhost:7777/catalog/${postRef.current.dataset.id}/like`,
         JSON.parse(token),
         {
           id: postRef.current.dataset.id,
@@ -201,7 +201,15 @@ const Post = ({ photo, isSpecificPhoto = false, ws }: CustomPostProps) => {
         navigate("/login");
       }
 
-      ws("Like_Post");
+      ws(
+        "Like_Post",
+        isLiked
+          ? {
+              title: `Post has been liked`,
+              description: `${username} has liked your post`,
+            }
+          : {}
+      );
     } else {
       navigate("/login");
     }

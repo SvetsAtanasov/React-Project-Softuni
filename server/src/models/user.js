@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema({
     required: [true, "Password field is required"],
     minLength: [4, "Password needs to be at least 4 chars long"],
   },
+  notifications: [
+    {
+      title: String,
+      description: String,
+    },
+  ],
 });
 
 userSchema.pre("save", function (next) {

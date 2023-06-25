@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { request } from "../utils/utils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket(
-  "wss://instagram-clone-api-nlh3.onrender.com/catalog"
-);
+const client = new W3CWebSocket("ws://localhost:7777/catalog");
 
 export type Photo = {
   handleGetAllPhotos: () => any;
@@ -31,14 +29,13 @@ export const PhotoProvider = ({ children }: any) => {
   const navigate = useNavigate();
   const [allPhotos, setPhotos] = useState([]);
 
-  const handleSendMessageToServer = (messageType: string) => {
-    client.send(JSON.stringify({ type: messageType }));
+  const handleSendMessageToServer = (messageType: string, data = {}) => {
+    client.send(JSON.stringify({ type: messageType, data }));
   };
 
   useEffect(() => {
     client.onopen = () => {
       console.log("client test");
-      client.send("Client");
     };
 
     client.onmessage = (message: any) => {

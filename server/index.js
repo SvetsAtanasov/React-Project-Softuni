@@ -65,6 +65,7 @@ app.get("/*", (req, res) => {
 const server = createServer(app);
 
 initDatabase(process.env.DB_URL).then(() => {
+  console.log(process.env.DB_URL);
   server.listen(7777, () => {
     console.log(`Server running on port: ${7777}`);
   });
@@ -78,16 +79,12 @@ const wss = new WebSocketServer({
 let connectedClients = [];
 
 wss.on("connection", (ws, req) => {
-  console.log(ws.id);
-  ws.id = req.headers["sec-websocket-key"];
   connectedClients.push(ws);
-
-  connectedClients.forEach((client) => client.send(`Server\n`));
 
   ws.on("message", async (message) => {
     const parsedMessage = JSON.parse(message);
 
-    console.log(parsedMessage);
+    if (!parsedMessage) return;
 
     if (
       parsedMessage.type === "Like_Post" ||

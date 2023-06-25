@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }: any) => {
   const logout = useCallback(async () => {
     const token = JSON.parse(localStorage.getItem("token")!);
 
-    const res = await request.post("http://localhost:7777/logout", token);
+    const res = await request.post("http://localhost:7777/logout", token, {});
 
     if (res.status === 401) {
       navigate("/");

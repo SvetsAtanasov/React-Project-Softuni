@@ -59,6 +59,7 @@ async function login(username, password) {
 async function authMiddleware(req, res, next) {
   //Rework authMiddleware
   if (req.headers.authorization) {
+    console.log(req.headers.authorization);
     const token = JSON.parse(req.headers.authorization).token;
 
     try {
